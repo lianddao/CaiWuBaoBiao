@@ -51,7 +51,7 @@ public class PeiZhiController extends SupperController<PeiZhiService, PeiZhi> {
         model.addAttribute("category_data", categoryList);
         model.addAttribute("category", category);
         model.addAttribute("isShowAll", isShowAll);
-        if (category.indexOf("开氏") != - 1) {
+        if (category != null && category.indexOf("开氏") != - 1) {
             model.addAttribute("day", StringUtils.isEmpty(day) ? "2021-08-01" : day);
         }
         else {

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>惠州石化工业互联网平台</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script th:src="@{/Content/assets/lib/jquery-2.1.1.min.js}"></script>	
+    <script th:src="@{/contextechars/js/echarts/js/echarts.min.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/common.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/js/echarts.min.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/js/china.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/areaChartsJson.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/barChartsJson.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/lineChartsJson.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/mapChartsJson.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/roseChartsJson.js}"></script>
+    <script th:src="@{/contextechars/js/echarts/lineAndBarChartsJson.js}"></script>
+
+    <!--惠州石化定制样式-->
+    <link th:href="@{/contextsy/css/style.css}" rel="stylesheet">
+
+<style>
+    .abc123 {
+        height: 190px;
+        overflow: hidden;
+    }
+
+    .abc123 * {
+       
+        text-align: center;
+    }
+    #columntype5_list {
+        position: absolute;
+    }
+    #columntype6_list {
+        position: absolute;
+    }
+    #columntype8_list {
+        position: absolute;
+    }
+    #columntype7_list {
+        position: absolute;
+    }
+</style>
+</head>
+
+<body>
+<div class="warper">
+    <div class="header">
+        <div class="logo">惠州石化工业互联网平台</div>
+        <div class="nav_cont">
+            <div class="nav_cont_l"></div>
+            <div class="nav_cont_c">
+                <ul class="nav_list">
+                    <li th:each="layout : ${layoutList}"><a
+                            th:if="${layout.id} eq ${layoutid}"
+                            th:href="@{'/Mould/sytwoindex?mid='+ ${mid} +'&layoutid='+ ${layout.id}}"
+                            th:text="${layout.layoutname}" th:title="${layout.layoutname}" class="moren" target="view_window"></a>
+                        <a th:if="${layout.id} ne ${layoutid}"
+                           th:href="@{'/Mould/sytwoindex?mid='+ ${mid} +'&layoutid='+ ${layout.id}}"
+                           th:text="${layout.layoutname}" th:title="${layout.layoutname}" target="view_window"></a>
+
+                    </li>
+                </ul>
+
+                <ul class="navigation_r">
+                    <li class="weather"><span class="icn_wea"></span><i class="font_wea">16~21°C</i></li>
+                    <li class="line"></li>
+                    <li class="huanbao">绿色环保天数<b>18</b>天</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content_left">
+            <div class="panel">
+                <div class="panel_top_mid"></div>
+                <div class="panel_footer"></div>
+                <div class="left_mokuai1"> 
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype1_name" ></div>
+                    </div>
+                    <div class="charts_box" id="columntype1" > </div>                
+                </div>
+                <div class="left_mokuai2"><!--------左侧模块2------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font"  id="columntype2_name" ></div>                       
+                    </div>
+                     <div class="charts_box"  id="columntype2"></div>
+				</div>                              
+                <div class="left_mokuai3"><!--------左侧模块3------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype3_name" ></div>
+                    </div>
+                    <div class="charts_box" id="columntype3"></div>
+                </div>
+                <div class="left_mokuai4"><!--------左侧模块4------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype4_name" ></div>
+                    </div>
+                    <div id="columntype4"  class="charts_box"  > </div>                
+                </div>
+            </div>
+        </div>
+
+        <div class="content_marp">
+            <div class="panel">
+                <div class="panel_top_mid"></div>
+                <div class="panel_footer"></div>
+                <iframe src="" 
+                width="100%"  height="985px" style="min-width:900px;" 
+                id="contentWrap" frameborder="0" scrolling="auto"
+                 name="mainFrame"></iframe>
+                <div class="floating">
+                    <div class="sousuo">
+                        <input type="text" name="" id="" value="请输入点位名称" class="sousuo_input"/>
+                        <button class="sousuo_button" type="button">搜素点位</button>
+                    </div>
+                    <ul class="sousuo_list">
+                        <li><span class="wenjian"></span><i class="sousuo_font">厂区专题图层</i></li>
+                        <li><span class="wenjian"></span><i class="sousuo_font">世界船舶图层</i></li>
+                        <li><span class="wenjian"></span><i class="sousuo_font">环保监测图层</i></li>
+                        <li><span class="wenjian"></span><i class="sousuo_font">视频监控</i></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content_right">
+            <div class="panel">
+                <div class="panel_top_mid"></div>
+                <div class="panel_footer"></div>
+                <div class="right_mokuai1"> <!--------右侧模块1------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype5_name"></div>
+                    </div>
+                    <div id="columntype5" class="charts_box" > </div>            
+                </div>
+                <div class="right_mokuai2"> <!--------右侧模块2------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font"  id="columntype6_name" ></div>
+                    </div>
+                    <div  class="charts_box" id="columntype6"></div>         
+                </div>
+                <div class="right_mokuai3"> <!--------右侧模块3------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype7_name" ></div>
+                    </div>
+                 <div class="charts_box" id="columntype7"></div>
+                </div>
+                <div class="right_mokuai4"> <!--------右侧模块4------------>
+                    <div class="mokui_tit">
+                        <div class="mokui_tit_l"></div>
+                        <div class="mokui_tit_m"></div>
+                        <div class="mokui_tit_r"></div>
+                        <div class="tit_font" id="columntype8_name" ></div>
+                    </div>							    
+					
+					<div class="charts_box" id="columntype8"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<SCRIPT type="text/javascript"> 
+var mid = "";
+var layoutid = "";
+function getQueryVariable(variable){//获取url后面的参数
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
+if(getQueryVariable("mid")){
+	mid=getQueryVariable("mid");
+}
+if(getQueryVariable("layoutid")){
+    layoutid = getQueryVariable("layoutid");			  
+}
+
+$(document).ready(function(){	
+				getColumnlistByMid(mid,layoutid);	//根据模板ID初始化	
+			});
+		
+function getColumnlistByMid(mid,layoutid) {//根据模板mid获取改模板有多少个栏目板块
+
+        $.ajax({
+            type: "get",
+            url: "/Mould/getColumnlistByMid?mid="+mid+"&layoutid="+layoutid,
+            success: function (data) {      				  
+            	if(data!=null && data!=""){
+	                for (var i=0;i<data.data.length;i++) {
+	                	   var pair = data.data[i];
+	               	  	   getCarouselist(pair.id,pair.columntype);	                	      
+	                  }
+            	  }
+            },
+            error: function () {
+                alert("3Error");
+            }
+        });
+    }
+//根据 栏目columncode取该板块下面的显示配置，columntype是显示的位置，该板块显示几个，每个的显示数据类型是什么，一共有几个板块在轮动。			    
+function getCarouselist(columncode,columntype) {
+				  var carousename   = new Array(); 
+				  var carouseid   = new Array(); 
+				  var slideshowtime = new Array(); 
+				  var carousetype = new Array(); 
+				  var CarouseID="";
+				  var carname="";
+				  var catype="";
+				
+					$.ajax({
+			            type: "get",
+			            url: "/Carouse/getCarouselist?columncode="+columncode,
+			            success: function(data) {
+			            	var index =0;	
+			            	var times=60000;
+			            	if(data!=null && data!=""){
+		           				  for (i = 0; i < data.length; i++) { 
+										if(data[i].carousetype=="map"){
+										  $('#contentWrap').attr('src', data[i].urls );	   
+		           						}else{
+										  carouseid[i]=data[i].id;
+										  carousename[i]=data[i].carousename;
+		           						}
+		           						if(data[i].slideshowtime==null){
+		           						  slideshowtime[i]=times;
+		           						}else{
+		           						  slideshowtime[i]=data[i].slideshowtime;			  
+		           						}		           						
+		           						  carousetype[i]=data[i].carousetype;           					
+		           					      CarouseID=data[0].id;
+		           					      carname=data[0].carousename;
+		           					      catype=data[0].carousetype;
+		           						
+		           				  }
+			            	}
+           		        if(columntype!="map"){
+           				 getshowlist(columntype,columncode,CarouseID,catype,carname); 
+	           				 if(data.length>1){//显示多个的时候才轮播
+	  						  var timer = setInterval(function(){
+ 										index = (index == carouseid.length-1) ? 0 : index + 1; 
+ 										 CarouseID=carouseid[index];
+ 										 catype=carousetype[index];
+ 										 carname=carousename[index];
+ 									    getshowlist(columntype,columncode,CarouseID,catype,carname); 
+	  									   
+	  							}, slideshowtime[index]); 
+	           				 
+	           				  }
+           		            }
+			            	},
+			 			 error:function () {
+				                alert("2Error");
+				            }
+					     });
+			    }
+//根据 栏目columncode取该板块下面的显示配置，columntype是显示的位置，显示模板CarouseID，carousetype显示数据类型是什么，展示数据。				  			
+function getshowlist(columntype,columncode,CarouseID,carousetype,carname) {		  
+				  $("#"+columntype+"_name").text(carname);
+				  var url="";
+			   		if(carousetype=="pie"){
+			   		   url="/Carouse/getinitRose?carousecode="+CarouseID;
+			   	     }else if( carousetype=="lineorbar"||carousetype=="area"||carousetype=="line" ||carousetype=="bar"){
+			   	      url="/Carouse/getshowjson?carousecode="+CarouseID	;   
+			   	     }else{
+			   	      url="/Carouse/getshowlist?columncode="+columncode+"&CarouseID="+CarouseID;			   
+			   	     }			   		
+					$.ajax({
+			            type: "get",
+			            url: url,
+			            success: function(data) {
+			            	if(carousetype=="pie"){
+			            		$("#"+columntype).empty();
+			            		var showobject = echarts.init(document.getElementById(columntype));
+			            		document.getElementById(columntype).removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性,
+			            		initRose(showobject, data.data);	
+			            	}
+			            	if(carousetype=="lineorbar"){
+  			            		$("#"+columntype).empty();
+			            		var showobject = echarts.init(document.getElementById(columntype));
+			            		document.getElementById(columntype).removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性,	
+			            		initLineAndBar(showobject, data);	
+			  			     }
+			            	if(carousetype=="area"){
+  			            		 $("#"+columntype).empty();
+			            		var showobject = echarts.init(document.getElementById(columntype));
+			            		document.getElementById(columntype).removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性,			  
+			            		initArea(showobject, data);	 			            		
+			  			  	}
+			            	if(carousetype=="line"){
+  			            		$("#"+columntype).empty();
+			            		var showobject = echarts.init(document.getElementById(columntype));
+			            		document.getElementById(columntype).removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性,			  
+			            		initLine(showobject, data);	
+			  			  	}	
+			            	if(carousetype=="bar"){
+    			            	$("#"+columntype).empty();
+  			            		var showobject = echarts.init(document.getElementById(columntype));
+  			            		document.getElementById(columntype).removeAttribute('_echarts_instance_'); // 移除容器上的 _echarts_instance_ 属性,			  
+  			            		initBar(showobject, data);	
+  			  			  	}	
+			            	if(carousetype=="list2"){
+		  			            $("#"+columntype).empty();						           		
+	            		        $("#"+columntype).prepend(data);
+	            		        uilistScroll(columntype, 230, 10000, 3);		            		         
+			            	}
+			            	if(carousetype=="list1"){
+		  			            $("#"+columntype).empty();						           		
+	            		        $("#"+columntype).prepend(data);
+	            		        uilistScroll(columntype, 230, 10000, 4);					            		         
+						      }
+			            	if(carousetype=="list3"){
+  		  			            $("#"+columntype).empty();	
+  		  			            $("#"+columntype).height(190);
+  	            		        $("#"+columntype).prepend(data);
+  	            		        uilistScroll(columntype, 230, 10000, 4);					            		         
+			  			     }
+			            	if(carousetype=="list4"){
+		            			$("#"+columntype).empty();		  
+	            		        $("#"+columntype).prepend(data);		            		
+	            		        tableScroll(columntype+"_list", 230, 150, 4);
+			            	}
+			            	
+			            	},
+			 			 error:function () {
+				               // alert("11Error");
+				            }
+					     });
+			    }		
+     var MyMarhq2 = '';
+    function tableScroll(tableid, hei, speed, len) {//表单轮播
+        clearInterval(MyMarhq2);
+        var item = $('#' + tableid).find('tbody').find("tr").length;            
+        if (item > len) {        				 
+            $('#' + tableid).find('tbody').html($('#' + tableid).find('tbody').html() + $('#' + tableid).find('tbody').html());
+            var tblTop = 0;
+            var outerHeight = $('#' + tableid).find('tbody').find("tr").outerHeight();                    
+            function Marqueehq() {
+                if (tblTop <= -outerHeight * item) {
+                    tblTop = 0;
+                } else {
+                    tblTop -= 1;
+                }               
+              $('#' + tableid).css({top: tblTop});
+            }            
+            MyMarhq2 = setInterval(Marqueehq, speed);
+            // 鼠标移上去取消事件         
+            $('#' + tableid).find('tbody').hover(function () {
+                clearInterval(MyMarhq2);
+            }, function () {
+                clearInterval(MyMarhq2);
+                MyMarhq2 = setInterval(Marqueehq, speed);
+            })
+        }
+    }
+    
+    var MyMarhq = '';
+function uilistScroll(divid, hei, speed, len) {//ul列表 轮播		 
+	    clearInterval(MyMarhq); 	 
+	    var item = $('#' + divid).find('ul').find("li");
+	    var tblTop = 0;
+	    var qum = 0;
+	    var f = 0;	
+	    $('#' + divid).find('ul').find("li").hide();//隐藏所有li
+	    if(tblTop == 0){
+		 	for( var i=0; i<len; i++ ){  
+			    item.eq(i).show();//显示前len个li
+		   }		  
+	    }
+	    if(item.length>len){	  
+	    qum= Math.ceil(item.length/len)-1;
+	    function Marqueehq() {
+	    				  $('#' + divid).find('ul').find("li").hide();
+	    	                if (tblTop < qum) {
+	    	                	tblTop += 1;
+	    	           	        f = tblTop*len;    	                    
+	    	                } else {
+		                		tblTop = 0;
+		         	            f = 0;
+	    	                }
+	    	                for( var i=f; i<(tblTop+1)*len; i++ ){    	                	
+	    	                	item.eq(i).show();
+	    	                }
+	    	            }
+	    MyMarhq = setInterval(Marqueehq, speed);  
+	    // 鼠标移上去取消事件 
+	    $('#' + divid).find('ul').hover(function () {
+	        clearInterval(MyMarhq);
+	    }, function () {
+	        clearInterval(MyMarhq);
+	        MyMarhq = setInterval(Marqueehq, speed);
+	    })
+	    }
+ }
+
+</SCRIPT>
+</html>

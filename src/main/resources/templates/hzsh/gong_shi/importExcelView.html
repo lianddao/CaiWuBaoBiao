@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<script th:src="@{/Content/assets/lib/jquery-2.1.1.min.js}"></script>
+	<script th:src="@{/Content/assets/lib/ajaxfileupload.js}"></script>
+	<script th:src="@{/Content/assets/lib/aYin/aYin.js}"></script>
+	<script th:src="@{/Content/assets/lib/bootstrap/js/bootstrap.min.js}"></script>
+	<link th:href="@{/Content/assets/css/main.css}" rel="stylesheet" />
+	<link th:href="@{/Content/assets/lib/fontawesome-pro/css/fontawesome.css}" rel="stylesheet" />
+	<link th:href="@{/Content/assets/lib/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+	<link th:href="@{/Content/assets/lib/aYin/aYin.css}" rel="stylesheet" />
+</head>
+<body>
+
+	<div class="top-barcenter">
+		<ul class="breadcrumb top-breadcrumb">
+			<li><i class="fa fa-home"></i></li>
+			<li>惠州石化</li>
+			<li><a href="/GongShi/list">公式列表</a></li>
+		</ul>
+		<ul class="top-toolbar"></ul>
+	</div>
+	<div align="center">
+		<form class="form-horizontal" id="form_table" action="#"
+			enctype="multipart/form-data" method="post">
+			<br /> <br /> <input type="button" class="btn btn-primary"
+				value="导入" onclick="ajaxFileUpload()">
+			&nbsp; <input type="reset" value="重置"> <input
+				class="form-input" type="file" name="filename" id="filename"></input>
+		</form>
+	</div>
+	<div align="center">
+		<textarea id="result_text" hidden="true" style="width:80%;height:200px"></textarea>
+	</div>
+</body>
+<script type="text/javascript">
+    function ajaxFileUpload() {
+   	 $("#result_text").attr("hidden",false);
+   	 $("#result_text").val("等待返回结果......");
+        $.ajaxFileUpload
+        (
+            {
+                url: '/GongShi/importExcel', //用于文件上传的服务器端请求地址
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'filename', //文件上传域的ID
+                dataType: 'String', //返回值类型 一般设置为json
+                success: function (data, status)  //服务器成功响应处理函数
+                {
+               	 //alert(data);
+               	 $("#result_text").val(data);
+                },
+                error: function (data, status, e)//服务器响应失败处理函数
+                {
+               	 console.log(e)
+               	 $("#result_text").val(data);
+                }
+            }
+        )
+        return false;
+    }
+</script>
+</html>

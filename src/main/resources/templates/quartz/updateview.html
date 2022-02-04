@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script th:src="@{/Content/js/datepicker/WdatePicker.js}"></script>
+<script th:src="@{/Content/assets/lib/jquery-2.1.1.min.js}"></script>
+<script th:src="@{/Content/assets/lib/aYin/aYin.js}"></script>
+<script th:src="@{/Content/assets/lib/bootstrap/js/bootstrap.min.js}"></script>
+<link th:href="@{/Content/assets/css/main.css}" rel="stylesheet" />
+<link
+	th:href="@{/Content/assets/lib/fontawesome-pro/css/fontawesome.css}"
+	rel="stylesheet" />
+<link th:href="@{/Content/assets/lib/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+<link th:href="@{/Content/assets/lib/aYin/aYin.css}" rel="stylesheet" />
+<link th:href="@{/Content/assets/lib/bootstrap/css/bootstrap.min.css}"
+	rel="stylesheet" />
+</head>
+<body>
+
+
+	<div class="top-bar">
+		<ul class="breadcrumb top-breadcrumb">
+			<li><i class="fa fa-home"></i></li>
+			<li>配置管理</li>
+			<li><a href="/QuartzDeploy/list">定时调度任务</a></li>
+		</ul>
+		<ul class="top-toolbar">
+		</ul>
+	</div>
+
+	<div align="center">
+		<form action="#" th:action="@{/QuartzDeploy/update}"
+			th:object="${quartzDeploy}" method="post">
+			<p>
+				<input type="text" th:field="*{id}" hidden="false" />
+			</p>
+			<div class="panel panel-line">
+				<div class="panel-heading">
+					<span class="panel-title">修改定时任务规则设置</span>
+				</div>
+				<div class="panel-body">
+
+					<table class="table-form">
+						<tr>
+							<th width="150">名称</th>
+							<td><input type="text" class="form-control"
+								th:field="*{name}" placeholder="请输入名称" /></td>
+							<th width="150">任务执行时间规则</th>
+							<td><input type="text" class="form-control"
+								th:field="*{cron}" placeholder="请输任务执行时间规则" /></td>
+						</tr>
+				
+						<tr>
+							<th width="150">项目英文名称</th>
+							<td ><input type="text" class="form-control" th:field="*{projectcode}" placeholder="请输入备注" /></td>
+							<th width="150">系统名称</th>
+							<td ><input type="text" class="form-control" th:field="*{projectname}" placeholder="请输入备注" /></td>
+						</tr>
+						<tr>
+						 <th width="150">状态</th>
+		                  <td >  
+				        	<div class="row">
+				            	<div class="col-xs-8">		              
+					            	<select name="status" th:field="*{status}"  class="form-control" th:value="*{status}"> 										
+										<option value="1">开启</option> 
+										<option value="0">停止</option> 
+									</select>
+				              </div>
+				          </div>
+		        		 </td> 
+						<th width="150">备注</th>
+						<td ><input type="text" class="form-control" th:field="*{remark}" placeholder="请输入备注" /></td>
+
+						</tr>
+						<tr align="center">
+							<td colspan="4" align="center">
+								<div class="col-xs-4">
+									<div class=" btn-group btn-group-justified opinion-button"
+										role="group" aria-label="...">
+										<div class="btn-group active" role="group">
+											<button type="submit" class="btn btn-default">提交</button>
+										</div>
+										<div class="btn-group" role="group">
+											<button type="reset" class="btn btn-default">重置</button>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</table>
+						</div>
+</body>
+</html>

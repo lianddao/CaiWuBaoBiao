@@ -1,0 +1,419 @@
+/*!ayinmixin.less*/
+
+//animation
+.ani(@speed:.5s){ transition: all @speed cubic-bezier(0.78, 0.02, 0.2, 1),z-index 0.12s 0.12s;}
+@ease: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+@linear: cubic-bezier(0.0, 0.0, 1.0, 1.0);
+@ease-in: cubic-bezier(0.42, 0, 1.0, 1.0);
+@ease-out: cubic-bezier(0, 0, 0.58, 1.0);
+@ease-in-out: cubic-bezier(0.42, 0, 0.58, 1.0);
+
+//color
+.bgc(@color){background-color: @color;}
+.bgcw(@p:100%){background-color: fade(@wh,@p);}
+.bgcb(@p:100%){background-color: fade(@bk,@p);}
+.fc(@color){color:@color;}
+.fcw(@p:100%){color:fade(@wh,@p);}
+.fcb(@p:100%){color:fade(@bk,@p);}
+
+//border
+.bd(@px:1px,@col:#ccc){border:@px solid @col;}
+.bdb(@px:1px,@col:#ccc){border-bottom:@px solid @col;}
+.bdt(@px:1px,@col:#ccc){border-top:@px solid @col;}
+.bdr(@px:4px){border-radius:@px;}
+.bdtriangle(@bw, @bc, @drt) { @dbs: solid; width: 0;height: 0;overflow: hidden; border-width: @bw;border-style: @dbs;_border-style: dashed; border-color: transparent;
+    .if-sim () when (@drt = top) { border-bottom-color: @bc; _border-bottom-style: @dbs;}
+    .if-sim () when (@drt = right) {border-left-color: @bc; _border-left-style: @dbs;}
+    .if-sim () when (@drt = bottom) {border-top-color: @bc; _border-top-style: @dbs;}
+    .if-sim () when (@drt = left) { border-right-color: @bc; _border-right-style: @dbs;}
+    .if-sim () when (@drt = tl) { border-top-color: @bc; border-left-color: @bc; _border-top-style: @dbs; _border-left-style: @dbs; }
+    .if-sim () when (@drt = tr) { border-top-color: @bc; border-right-color: @bc; _border-top-style: @dbs; _border-right-style: @dbs; }
+    .if-sim () when (@drt = bl) { border-bottom-color: @bc;border-left-color: @bc; _border-bottom-style: @dbs; _border-left-style: @dbs;}
+    .if-sim () when (@drt = br) { border-bottom-color: @bc; border-right-color: @bc; _border-bottom-style: @dbs; _border-right-style: @dbs;}
+    .if-sim();
+}
+
+
+//special efficacy
+.bxs(@x:0,@y:0,@s:10px,@p:20%){box-shadow:@x @y @s 0 fade(@bk,@p);}
+
+//object
+.justify(){text-align: justify;
+    &:after{ display: inline-block; width: 100%;  padding-left: 100%;content:''; }
+}
+.fae(){display: inline-block;font-family: 'Font Awesome 5 Pro';font-style: normal; font-size: inherit;text-rendering: auto;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+.fullbox(@num:0){top:@num; right:@num; bottom:@num; left:@num;}
+.fixfloat(){&:after{content:"."; height:0; display:block; visibility: hidden; clear:both;}}
+.thidden(){white-space:nowrap; overflow: hidden; text-overflow: ellipsis;}
+.table(){display:table;li{display:table-cell; text-align: center; width: 1%;}}
+.iblock(@num:20%){font-size: 0; .fixfloat; li{float: left;text-align: center; font-size: 1rem; width: @num;}}
+.fix-c(@mode){ .if-fix()when(@mode=x){transform: translateX(-50%);} .if-fix()when(@mode=y){transform: translateY(-50%);}.if-fix()when(@mode=xy){transform: translateX(-50%) translateY(-50%);} .if-fix();}
+.placeholder(@color:@gy-l3){ &::-webkit-input-placeholder {color:@color;}&:-moz-placeholder { color:@color; opacity:  1; } &::-moz-placeholder { color:@color; opacity:  1;} &:-ms-input-placeholder {  color:@color;}}
+.pcenter(@fix:xy,@pos:absolute){position:@pos; left:50%; top:50%; .fix-c(@fix);}
+.pcenter-margin(@fl,@ft,@pos:absolute){position:@pos; left:50%; top:50%; margin-left:@fl;margin-top:@ft;}
+
+/* --xmixins study-- */
+/*
+.x-animation(@value) {
+    -webkit-animation: @value;
+    -moz-animation: @value;
+    -o-animation: @value;
+    animation: @value;
+}
+.x-appearance(@value) {
+    -webkit-appearance: @value;
+    -moz-appearance: @value;
+    appearance: @value;
+}
+.x-backface-visibility(@value:visible) {
+    -webkit-backface-visibility: @value;;
+    -moz-backface-visibility: @value;;
+    -ms-backface-visibility: @value;;
+    backface-visibility: @value;
+}
+.x-background-clip(@mode: border-box) {
+
+    .x-if-simulater () when (@mode = border-box) {
+        -moz-background-clip: border;
+        -webkit-background-clip: border;
+    }
+
+    .x-if-simulater () when (@mode = padding-box) {
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding;
+    }
+
+    .x-if-simulater () when (@mode = content-box) {
+        -moz-background-clip: content;
+        -webkit-background-clip: content;
+    }
+
+    .x-if-simulater();
+
+    background-clip: @mode;
+}
+.x-background-origin(@mode: border-box) {
+
+    .x-if-simulater () when (@mode = border-box) {
+        -moz-background-origin: border;
+        -webkit-background-origin: border;
+    }
+
+    .x-if-simulater () when (@mode = padding-box) {
+        -moz-background-origin: padding;
+        -webkit-background-origin: padding;
+    }
+
+    .x-if-simulater () when (@mode = content-box) {
+        -moz-background-origin: content;
+        -webkit-background-origin: content;
+    }
+
+    .x-if-simulater();
+
+    background-origin: @mode;
+}
+.x-background-retina(@img_1x, @img_2x, @width_1x, @height_1x) {
+    background-image: url(@img_1x);
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min--moz-device-pixel-ratio: 2),
+    only screen and (-o-min-device-pixel-ratio: 2/1),
+    only screen and (min-device-pixel-ratio: 2),
+    only screen and (min-resolution: 192dpi),
+    only screen and (min-resolution: 2dppx) {
+        background-image: url(@img_2x);
+        .x-background-size(@width_1x @height_1x);
+    }
+}
+.x-background-size(@size) {
+    -webkit-background-size: @size;
+    -moz-background-size: @size;
+    -o-background-size: @size;
+    background-size: @size;
+}
+.x-border-radius(@radius, @direction:all) {
+    .x-if-simulater () when (@direction = all) {
+        -moz-border-radius: @radius;
+        -webkit-border-radius: @radius;
+        border-radius: @radius;
+    }
+
+    .x-if-simulater () when (@direction = top) {
+        -moz-border-radius: @radius @radius 0 0;
+        -webkit-border-radius: @radius @radius 0 0;
+        border-radius: @radius @radius 0 0;
+    }
+
+    .x-if-simulater () when (@direction = right) {
+        -moz-border-radius: 0 @radius @radius 0;
+        -webkit-border-radius: 0 @radius @radius 0;
+        border-radius: 0 @radius @radius 0;
+    }
+
+    .x-if-simulater () when (@direction = bottom) {
+        -moz-border-radius: 0 0 @radius @radius;
+        -webkit-border-radius: 0 0 @radius @radius;
+        border-radius: 0 0 @radius @radius;
+    }
+
+    .x-if-simulater () when (@direction = left) {
+        -moz-border-radius: @radius 0 0 @radius;
+        -webkit-border-radius: @radius 0 0 @radius;
+        border-radius: @radius 0 0 @radius;
+    }
+
+    .x-if-simulater();
+}
+
+.x-border-triangle(@borderWidth, @borderColor, @direction) {
+    @default-border-style: solid;
+
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    border-width: @borderWidth;
+    border-style: @default-border-style;
+    _border-style: dashed;
+    border-color: transparent;
+
+    .x-if-simulater () when (@direction = top) {
+        border-bottom-color: @borderColor;
+        _border-bottom-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = right) {
+        border-left-color: @borderColor;
+        _border-left-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = bottom) {
+        border-top-color: @borderColor;
+        _border-top-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = left) {
+        border-right-color: @borderColor;
+        _border-right-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = topleft) {
+        border-top-color: @borderColor;
+        border-left-color: @borderColor;
+        _border-top-style: @default-border-style;
+        _border-left-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = topright) {
+        border-top-color: @borderColor;
+        border-right-color: @borderColor;
+        _border-top-style: @default-border-style;
+        _border-right-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = bottomleft) {
+        border-bottom-color: @borderColor;
+        border-left-color: @borderColor;
+        _border-bottom-style: @default-border-style;
+        _border-left-style: @default-border-style;
+    }
+
+    .x-if-simulater () when (@direction = bottomright) {
+        border-bottom-color: @borderColor;
+        border-right-color: @borderColor;
+        _border-bottom-style: @default-border-style;
+        _border-right-style: @default-border-style;
+    }
+
+    .x-if-simulater();
+}
+ .x-box-shadow(@params) {
+       -moz-box-shadow: @params;
+    -webkit-box-shadow: @params;
+            box-shadow: @params;
+ }
+.x-box-sizing(@model) {
+    -webkit-box-sizing: @model;
+       -moz-box-sizing: @model;
+            box-sizing: @model;
+}
+.x-clearfix() {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+    *zoom: 1;
+}
+.x-font-face(@fontName, @noSuffixFontUrl) {
+    @font-face {
+      font-family: "@{fontName}";
+      src: url("@{noSuffixFontUrl}.eot");
+      src: url("@{noSuffixFontUrl}.eot?#iefix") format("embedded-opentype"),
+           url("@{noSuffixFontUrl}.woff") format("woff"),
+           url("@{noSuffixFontUrl}.ttf")  format("truetype"),
+           url("@{noSuffixFontUrl}.svg#svgFontName") format("svg");
+    }
+}
+*/
+.x-grayscale() {
+    /* for Chrome, Safari, Opera */
+    -webkit-filter: grayscale(100%);
+    /* CSS3 standard usage */
+    filter: grayscale(100%);
+    /* for FF, data-uri generate from gray.svg */
+    filter: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICA8ZmlsdGVyIGlkPSJncmF5c2NhbGUiPgogICAgICAgIDxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwLjMzMzMgMC4zMzMzIDAuMzMzMyAwIDAgMC4zMzMzIDAuMzMzMyAwLjMzMzMgMCAwIDAuMzMzMyAwLjMzMzMgMC4zMzMzIDAgMCAwIDAgMCAxIDAiLz4KICAgIDwvZmlsdGVyPgo8L3N2Zz4=#grayscale');
+    /* for IE6~9 */
+    filter: gray;
+}
+/*
+.x-hyphens(@mode:auto) {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: @mode;
+    -moz-hyphens: @mode;
+    -ms-hyphens: @mode;
+    hyphens: @mode;
+}
+.x-inline-block() {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+.x-linear-gradient(...) {
+
+    @params: ~`"@{arguments}".toString().replace(/[\[\]]/g, "")`;
+    @webkitParams: ~`"@{arguments}".toString().replace(/[\[\]]/g, "")
+                        .replace(/to top|\b0deg\b/, "bottom")
+                        .replace(/to right|\b90deg\b/, "left")
+                        .replace(/to bottom|\b180deg\b/, "top")
+                        .replace(/to left|\b270deg\b/, "right")`;
+
+    @len: length(@arguments);
+
+    .x-if(@arguments) when(@len = 2) {
+        @startColor: extract(extract(@arguments, 1), 1);
+        @endColor: extract(extract(@arguments, 2), 1);
+        filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{startColor},endcolorstr=@{endColor},gradientType=0)"`;
+    }
+
+    .x-if(@arguments) when(@len > 2) {
+        @direction: extract(@arguments, 1);
+        @startColor: extract(extract(@arguments, 2), 1);
+        @endColor: extract(extract(@arguments, 3), 1);
+
+        .x-subif(@startColor, @endColor) when("@{direction}" = "to top") {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{endColor},endcolorstr=@{startColor},gradientType=0)"`;
+        }
+        .x-subif(@startColor, @endColor) when("@{direction}" = "to right") {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{startColor},endcolorstr=@{endColor},gradientType=1)"`;
+        }
+        .x-subif(@startColor, @endColor) when("@{direction}" = "to bottom") {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{startColor},endcolorstr=@{endColor},gradientType=0)"`;
+        }
+        .x-subif(@startColor, @endColor) when("@{direction}" = "to left") {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{endColor},endcolorstr=@{startColor},gradientType=1)"`;
+        }
+        .x-subif(@startColor, @endColor) when(@direction = 0deg) {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{endColor},endcolorstr=@{startColor},gradientType=0)"`;
+        }
+        .x-subif(@startColor, @endColor) when(@direction = 90deg) {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{startColor},endcolorstr=@{endColor},gradientType=1)"`;
+        }
+        .x-subif(@startColor, @endColor) when(@direction = 180deg) {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{startColor},endcolorstr=@{endColor},gradientType=0)"`;
+        }
+        .x-subif(@startColor, @endColor) when(@direction = 270deg) {
+            filter: ~`"progid:DXImageTransform.Microsoft.gradient(startcolorstr=@{endColor},endcolorstr=@{startColor},gradientType=1)"`;
+        }
+        .x-subif(@startColor, @endColor);
+    }
+
+    .x-if(@arguments);
+
+    background: -webkit-linear-gradient(@webkitParams);
+    background: linear-gradient(@params);
+}
+.x-min-height(@height) {
+    min-height: @height;
+    _height: @height;
+}
+
+.x-opacity(@opacity) {
+    @opacityIE: @opacity * 100;
+    -ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(Opacity=@{opacityIE})"; // IE 8 & 9
+    filter: ~"alpha(opacity=@{opacityIE})"; // IE 6 & 7
+    opacity: @opacity;
+}
+.x-perspective-origin(@origin:50% 50%) {
+    -webkit-perspective-origin: @origin;
+    -moz-perspective-origin: @origin;
+    perspective-origin: @origin;
+}
+.x-perspective(@value:none) {
+    -webkit-perspective: @value;
+    -moz-perspective: @value;
+    perspective: @value;
+}
+.x-placeholder(@color) {
+    &::-moz-placeholder {
+        color: @color;
+        opacity: 1;
+    }
+    &:-moz-placeholder {
+        color: @color;
+    }
+    &:-ms-input-placeholder {
+        color: @color;
+    }
+    &::-webkit-input-placeholder {
+        color: @color;
+    }
+}
+.x-radial-gradient(...) {
+    @param: ~`"@{arguments}".toString().replace(/[\[\]]/g, "")`;
+    background: -webkit-radial-gradient(@param);
+    background: -moz-radial-gradient(@param);
+    background: -ms-radial-gradient(@param);
+    background: radial-gradient(@param);
+}
+.x-text-overflow(@cutway: clip) {
+    overflow: hidden;
+    text-overflow: @cutway;
+    white-space: nowrap;
+}
+.x-transform-origin(@value: 50% 50% 0) {
+    -webkit-transform-origin: @value;
+    -moz-transform-origin: @value;
+    -ms-transform-origin: @value;
+    transform-origin: @value;
+}
+.x-transform-style(@value:flat) {
+    -webkit-transform-style: @value;
+    -moz-transform-style: @value;
+    transform-style: @value;
+}
+.x-transform(@value) {
+    -webkit-transform: @value;
+    -moz-transform: @value;
+    -ms-transform: @value;
+    -o-transform: @value;
+    transform: @value;
+}
+.x-transition(@value) {
+    -webkit-transition: @value;
+    -moz-transition: @value;
+    -o-transition: @value;
+    transition: @value;
+}
+.x-user-select(@mode:text) {
+    -webkit-user-select: @mode;
+    -moz-user-select: @mode;
+    -ms-user-select: @mode;
+    user-select: @mode;
+}
+*/

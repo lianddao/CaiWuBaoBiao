@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+/*
+惠州石化定制样式
+2020年11月6日
+*/
+
+
+/* ---------- 页面总框架样式 ---------- */
+a:hover { text-decoration: none }
+
+#spanUserInfo * { font-weight: normal }
+#spanUserInfo a, #spanUserInfo a:hover { margin: 0 5px; color: black; }
+#spanUserInfo .badge { background-color: red; position: relative; top: -5px; left: -12px; }
+
+/*导航栏*/
+#divNav {position: relative;z-index: 2; background: #0060a6; box-shadow: 0 3px 3px rgba(46, 46, 46, 0.2); font-size: 16px;}
+#divNav a {color: white; padding: 5px 20px; margin: 10px 5px; }
+#divNav a.active, #divNav a:hover {background: #01477a;border-radius: 25px;}
+#divNav .navbar { margin-bottom: 0; border: none; }
+#divNav .container-fluid { padding: 0 }
+
+#divContent { position: absolute; z-index: 1; width: inherit; top: 95px; bottom: 0px; }
+
+#divLeft, #divRight { padding: 0; height: 100%; overflow-y: auto; }
+#divLeft {background: #0060a6;}
+#divLeft .panel-group {margin-bottom: 0;}
+#divLeft .panel-body {padding: 0;}
+#divLeft .panel-body .panel-heading { background: #1a70af;}
+#divLeft .panel {border: none; border-bottom: solid 1px #427bb5; border-radius: unset; background-color: inherit;}
+#divLeft .panel + .panel {margin-top: 0;}
+#divLeft .panel:last-child { border: none;}
+#divLeft .panel-heading { padding: 0; color: white;}
+
+#divLeft .panel-heading a { display: inherit; padding: 16px 15px; }
+#divLeft .panel-heading a.default { border-left: solid;}
+
+/*前置图标*/
+#divLeft .panel-heading a i { position: absolute; left: -5px; font-size: 15px; margin-top: 2px;}
+
+/*加减号*/
+#divLeft .panel-heading a b { position: absolute; right: 5px; }
+
+/*切换按钮*/
+#divToggle { position: absolute; width: 15px; height: 100%; cursor: pointer; text-align: center; background-color: #1a70af; color: white; }
+#divToggle span { position: relative; top: calc(50% - 40px); font-size: x-small; background-color: #387eba; padding: 30px 0; }
+#divToggle.open-state span:before { content: "\25C4" }
+#divToggle.close-state span:before { content: "\25BA" }
+
+#divMain { position: absolute; left: 15px; right: 0px; top: 0px; bottom: 0px; overflow-y: auto; }
+#iframeMain { width: 100%; height: calc(100% - 7px); border: none; border:solid; }
+
+
+
+
+
+/* ---------- 页面主要内容的样式 ---------- */
+/*注意，这里覆盖了bootstrap原生样式 - 开始 */
+.bootstrap-table .fixed-table-container .table thead th { padding: 5px 0;}
+.bootstrap-table .fixed-table-container .table thead th .th-inner { padding: 5px 0;}
+/*注意，这里覆盖了bootstrap原生样式 - 结束 */
+
+
+.hzsh-container a { color: #333;}
+.hzsh-container a:hover {cursor: pointer;}
+
+.hzsh-container .breadcrumb { color: #666; padding: 5px; margin-bottom: 5px; background: none; border-bottom: solid 1px #ccc; border-radius: 0; }
+.hzsh-container-main {margin: 0 10px;}
+
+.hzsh-table th { background-color: #588ebc; color: white; text-align: center; font-size: 15px; }
+.hzsh-table th div.sortable { text-indent: 16px;}
+.hzsh-table a { color: #666;}
+
+
+
+
+
+/*为了匹配成本核算的页面布局 - 开始 */
+.breadcrumb { color: #666; padding: 5px; margin-bottom: 5px; background: none; border-bottom: solid 1px #ccc; border-radius: 0; }
+.bootstrap-table{ margin: 0 10px;}
+.table th { background-color: #588ebc; color: white; text-align: center; font-size: 15px; }
+.table th div.sortable { text-indent: 16px;}
+.table a { color: #666;}
+.bootstrap-table .fixed-table-pagination::after{margin-bottom: 0;}
+/*为了匹配成本核算的页面布局 - 结束 */

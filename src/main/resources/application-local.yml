@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    dynamic:
+      datasource:
+
+        # 默认效益测算的数据库
+        master:
+          driver-class-name: oracle.jdbc.OracleDriver
+          url: jdbc:oracle:thin:@localhost:1521/xe
+          username: 效益测算
+          password: abc123
+
+
+        # 价格表的数据库
+        jiaGe:
+          driver-class-name: oracle.jdbc.OracleDriver
+          url: jdbc:oracle:thin:@localhost:1521/xe
+          username: 效益测算
+          password: abc123

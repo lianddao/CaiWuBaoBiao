@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="../context/css/intstyle.css" rel="stylesheet" type="text/css" />
+    <link href="../context/css/style_index.css" rel="stylesheet" type="text/css" />
+    <link href="../Content/assets/lib/bootstrap-table/css/bootstrap-table-fixed-columns.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet"
+          href="../Content/assets/lib/x-editable-develop/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <link href="../Content/assets/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="../Content/assets/lib/bootstrap-table/css/bootstrap-table.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="../context/js/intstyle.js"></script>
+    <script src="../Content/assets/lib/bootstrap/4.3/js/bootstrap.bundle.js"></script>
+    <script src="../Content/assets/init/loadFiles.js" type="text/javascript" charset="utf-8"></script>
+    <!-- 引入的js文件 -->
+    <script src="../Content/js/datepicker/WdatePicker.js"></script>
+    <script src="../Content/assets/lib/bootstrap-table/js/bootstrap-table.min.js"></script>
+    <script src="../Content/assets/lib/base64.js"></script>
+    <script src="../Content/assets/lib/js-xlsx/xlsx.core.min.js"></script>
+    <script src="../Content/assets/lib/table-export/tableExport.js"></script>
+    <script src="../Content/assets/lib/bootstrap-table/js/bootstrap-table-export.js"></script>
+    <script src="../Content/assets/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="../Content/assets/lib/x-editable-develop/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <script src="../Content/assets/lib/bootstrap-table/js/bootstrap-table-editable.js"></script>
+    <script src="../Content/assets/lib/bootstrap-table/js/bootstrap-table-fixed-columns.js"></script>
+    <script src="../Content/assets/lib/bootstrap-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <style type="text/css">
+        select#sysicon option[value=0] { background-image:url(../../context/images/icons/icon1.png); }
+        select#sysicon option[value=1] { background-image:url(../../context/images/icons/icon1.png); }
+    </style>
+
+</head>
+<body>
+<div class="top-barcenter">
+    <ul class="breadcrumb top-breadcrumb">
+        <li><i class="fa fa-home"></i></li>
+        <li id="carousename"></li>
+        <li>数据</li>
+    </ul>
+    <ul class="top-toolbar"></ul>
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    添加
+                </h4>
+            </div>
+            <form id="form_data">
+                <div class="modal-body">
+               		 <div class="form-group">
+						<label>显示名称:</label>
+						
+						 <select id="carousecolumncode" name="carousecolumncode" class="form-control" >
+                            
+                        </select>
+					</div>
+                    <div class="form-group">
+                        <label for="name">数据名称:</label>
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="showstyle">样式:</label>
+                        <select id="showstyle" name="showstyle" class="form-control" >
+                        	<option value="" >--请选择样式--</option>
+                            <option value="mokuai4_biao1" >--list2样式1--</option>
+                            <option value="mokuai4_biao2" >--list2样式2--</option>
+                            <option value="mokuai4_biao3" >--list2样式3--</option>                            
+                            <option value="r_mokuai1_bg r_mokuai1_b1" >--list3样式1--</option>
+                            <option value="r_mokuai1_bg r_mokuai1_b2" >--list3样式2--</option>
+                            <option value="r_mokuai1_bg r_mokuai1_b3" >--list3样式3--</option>
+                            <option value="r_mokuai1_bg r_mokuai1_b4" >--list3样式4--</option>
+                        </select>
+                      
+                         
+                    </div>
+                    <div class="form-group">
+                        <label for="value">数据值(时间):</label>
+                        <input type="text" name="value" id="value" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="value1">数据值1:</label>
+                        <input type="text" name="value1" id="value1" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="value2">数据值2:</label>
+                        <input type="text" name="value2" id="value2" class="form-control">
+                    </div>
+                   
+                   <div class="form-group">
+                        <label for="value3">数据值3:</label>
+                        <input type="text" name="value3" id="value3" class="form-control">
+                    </div>
+                     <!-- 
+                    <div class="form-group">
+                        <label for="value4">数据值4:</label>
+                        <input type="text" name="value4" id="value4" class="form-control">
+                    </div>
+                     -->
+                    <div class="form-group">
+                        <label for="lorder">排序号:</label>
+                        <input type="text" name="lorder" id="lorder" class="form-control"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    </div>
+                   
+                    <div class="form-group">
+                        <label for="tendency">数据趋势:</label>
+                        <select id="tendency" name="tendency" class="form-control" >
+                            <option value="3" selected="selected">----</option>
+                            <option value="1" >--上升--</option>
+                            <option value="0">--下降--</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                       
+                        <label for="tendencycompletely">百分比值:</label>
+                        <input type="text" name="tendencycompletely" id="tendencycompletely" class="form-control">
+                    </div>
+                   
+                     
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btn-commit" onclick="add_info()" >
+                        提交更改
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<div id="toolbar" class="btn-group">
+
+    <button id="btn_add" type="button" class="btn btn-default" >
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+    </button>
+    <button id="btn_delete" type="button" class="btn btn-default">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+    </button>
+</div>
+
+
+<table id="tb_departments" class="table table-hover table-striped "></table>
+
+</body>
+<script title="获取menuTree的iframeMain的src参数">
+    
+    var carousecode=getParameter("carousecode",location.href).split("=")[1]; //获取参数值模块id
+    
+    //javascript获取指定参数及其对应的值
+    function getParameter(paraStr, url){
+        var result = "";
+        //获取URL中全部参数列表数据
+        var str = "&" + url.split("?")[1];
+        var paraName = paraStr + "=";
+
+        //判断要获取的参数是否存在
+        if(str.indexOf("&"+paraName)!=-1){
+            //如果要获取的参数到结尾是否还包含“&”
+            if(str.substring(str.indexOf(paraName),str.length).indexOf("&")!=-1){
+                //得到要获取的参数到结尾的字符串
+                var TmpStr=str.substring(str.indexOf(paraName),str.length);
+                //截取从参数开始到最近的“&”出现位置间的字符
+                result=TmpStr.substr(TmpStr.indexOf(paraName),TmpStr.indexOf("&")-TmpStr.indexOf(paraName));
+            }else{
+                result=str.substring(str.indexOf(paraName),str.length);
+            }
+        }else{
+            result="无此参数";
+        }
+        return (result.replace("&",""));
+    }
+    function getmoulds(){  
+    				    $.ajax({
+    		  		            dataType: "JSON",
+    		  		            type: "GET",
+    		  		            url: "/Carouse/findById?id="+carousecode,
+    		  		            success: function(data) {
+    		  		            			   
+	   		  		                if(data) {
+	   		  		                carousename=data.carousename;
+	   		  		               
+	   		  		               $("#carousename").html("所属轮播显示："+data.carousename);//设置菜单类别
+	   		  		               $("#myModalLabel").html("添加。所属轮播显示："+data.carousename);//设置新增标题
+	   		  		                }
+    		  		            },
+    		  		            error:function () {
+    		  		                alert("Error");
+    		  		            }
+    		  		        });
+    		 		    }
+</script>
+<script>
+    var local_host = '/Datalist/';
+	    var carousecolumncodelist = "";
+		 carousecolumncodelist= gettype();//获取部门
+    //搜索按钮点击事件
+    $("#btn_query").click(function(){
+
+        $("#tb_departments").bootstrapTable("refresh");
+        //清空搜索内容
+// 		$("#stateDate").val('');
+// 		$("#endDate").val('');
+    });
+    //选择自动刷新页面
+    $("#pmenuclassid").change(function(){
+        $('#tb_departments').bootstrapTable('refresh', {
+           url: local_host+'list'
+       });
+    });
+    $(function () {
+
+  			      
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+     
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        var carousename=""; //获取参数值模块名称
+        getmoulds();
+    
+
+    });
+     function gettype() {//获取显示字段
+        var result = [];
+        $.ajax({
+            url: "/CarouseColumn/getCarouseColumnlist?carousecode="+carousecode,
+            async: false,
+            type: "get",
+            data: {},
+            success: function (data) {
+              
+                for (var i = 0; i < data.length; i++) {
+                				 
+                    result.push({ value: data[i].id, text: data[i].name });
+                    $("#carousecolumncode").append(new Option(data[i].name, data[i].id));//新增模块中的所属部门下拉列表
+                    
+                }
+            }
+        });
+        return result;
+    } 
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $('#tb_departments').bootstrapTable({
+                fixedColumns: true, //固定表头
+                fixedNumber: 1,	//固定表头
+                height: window.innerHeight - $('#tb_departments').position().top + $(".breadcrumb").outerHeight(),  // ← case-1: divTableBefore 作为表格工具栏时采用此行
+                // height: window.innerHeight - $('#tb_departments').position().top + $(".breadcrumb").outerHeight() - $("#divTableBefore").outerHeight(),   // ← case-2: divTableBefore 不作为表格工具栏时采用此行
+                onPostBody:function (data){
+                    $(".fixed-table-border").eq(1).css({"width":"auto", "height":"auto"})
+                },
+                ajax:function(request){                    //使用ajax请求
+                    $.ajax({
+                        type:"GET",
+                        url:local_host+'list',
+                        contentType:'application/json;charset=utf-8',
+                        dataType:'json',
+                        data:request.data,
+                        success:function (res) {
+                            let data= {rows:res.records, total:res.total};
+                            request.success({
+                                row:data,
+                            });
+                            $('#tb_departments').bootstrapTable('load',data);
+                        },
+                        error:function(error){
+                            console.log(error);
+                        }
+                    })
+                },
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: true,                     //是否启用排序
+                sortOrder: "desc",                   //排序方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                queryParamsType: "",
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [20,30,50,100],        //可供选择的每页的行数（*）
+                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,                 //指定全匹配搜索
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: false,                //是否启用点击选中行
+                uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+                showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                showExport: true,                   //是否显示导出按钮
+                exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel','xlsx'],//导出文件类型
+                buttonsAlign:"right",               //按钮位置
+                Icons:'glyphicon-export',           //按钮图标
+                exportOptions: {
+                    ignoreColumn: [0],  //忽略某一列的索引
+                    fileName: 'priceTable',
+                    worksheetName: "sheet1",  //表格工作区名称
+                    tableName: 'price',
+                    excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+                    mso: {
+                        xslx: {                         // Specific Excel 2007 XML format settings:
+                            formatId: {                   // XLSX format (id) used to format excel cells. See readme.md: data-tableexport-xlsxformatid
+                                date:          14,          // formatId or format string (e.g. 'm/d/yy') or function(cell, row, col) {return formatId}
+                                numbers:       0            // formatId or format string (e.g. '\"T\"\ #0.00') or function(cell, row, col) {return formatId}
+                            }
+                        },
+                        onMsoNumberFormat: '\\@'
+
+                    },
+                },
+                //编辑编辑表格触发方法
+                onEditableSave: function (field, row, oldValue, $el) {
+                    $.ajax({
+                        type: "POST",
+                        url: local_host+"updateById",
+                        data: row, //{'strJson': JSON.stringify(row),'field':field},
+                        dataType: 'JSON',
+                        success: function (data) {
+                            console.log(data);
+                            if (data.code) {
+                                confirm(data.message);
+                            }
+                            window.parent.refresh();//刷新树
+                        },
+                        error: function () {
+                            alert("Error");
+                        },
+                        complete: function () {
+                        }
+                    });
+                },
+                columns: [{
+                    checkbox: true
+                },  {
+                       field: 'carousecolumncode',
+                       title: '显示模块',
+                       sortable: true,
+                       //align: 'left',//单元格中的数据水平方向的位置，'left', 'right', 'center'
+                       width:150,
+                       editable: {
+                           type: "select",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                           source: carousecolumncodelist,
+                           title: "显示字段",              //编辑框的标题
+                           disabled: false,             //是否禁用编辑
+                           emptytext: "空文本",          //空值的默认文本
+                           mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                           validate: function (v) {
+                               if (!$.trim(v)) {
+                                   return '不能为空';
+                               }
+                           }
+                       }
+                   }, {
+                    field: 'name',
+                    title: '名称',
+                    width : '150px',
+                    sortable: true , //排序
+                    editable: {
+                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                        title: "名称",              //编辑框的标题
+                        disabled: false,             //是否禁用编辑
+                        emptytext: "空文本",          //空值的默认文本
+                        mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                        validate: function (v) {
+                            if (!$.trim(v)) {
+                                return '不能为空';
+                            }
+                        }
+                    }
+           		 },{
+                    field: 'showdate',
+                    title: '时间',
+                    width : '95px',
+                    sortable: true , //排序
+                    editable: {
+                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                        title: "showdate",              //编辑框的标题
+                        disabled: false,             //是否禁用编辑
+                        emptytext: "空文本",          //空值的默认文本
+                        mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                      
+	                    }
+           		 }, {
+                      field: 'value',
+                      title: '数据值',
+                      width : '120px',
+                      sortable: true , //排序
+                      editable: {
+                          type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                          title: "数据值",              //编辑框的标题
+                          disabled: false,             //是否禁用编辑
+                          emptytext: "空文本",          //空值的默认文本
+                          mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                          validate: function (v) {
+                              if (!$.trim(v)) {
+                                  return '不能为空';
+                              }
+                          }
+                      }
+                  },{
+                         field: 'value1',
+                         title: '数据值1',
+                         width : '95px',
+                         sortable: true , //排序
+                         editable: {
+                             type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                             title: "数据值1",              //编辑框的标题
+                             disabled: false,             //是否禁用编辑
+                             emptytext: "空文本",          //空值的默认文本
+                             mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                           
+                         }
+                     }
+                  ,{
+                    field: 'value2',
+                    title: '数据值2',
+                    width : '95px',
+                    sortable: true , //排序
+                    editable: {
+                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                        title: "数据值2",              //编辑框的标题
+                        disabled: false,             //是否禁用编辑
+                        emptytext: "空文本",          //空值的默认文本
+                        mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                       
+                    }
+                },/**{
+                   field: 'value3',
+                   title: '数据值3',
+                   width : '95px',
+                   sortable: true , //排序
+                   editable: {
+                       type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                       title: "数据值3",              //编辑框的标题
+                       disabled: false,             //是否禁用编辑
+                       emptytext: "空文本",          //空值的默认文本
+                       mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                       
+                   }
+               },{
+                   field: 'value4',
+                   title: '数据值4',
+                   width : '95px',
+                   sortable: true , //排序
+                   editable: {
+                       type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                       title: "数据值4",              //编辑框的标题
+                       disabled: false,             //是否禁用编辑
+                       emptytext: "空文本",          //空值的默认文本
+                       mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                       
+                   }
+               },*/{
+                    field: 'lorder',
+                    title: '排序',
+                    sortable: true,
+                    align: 'center',//单元格中的数据水平方向的位置，'left', 'right', 'center'
+                    width:80,
+                    editable: {
+                        type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                        title: "排序",              //编辑框的标题
+                        disabled: false,             //是否禁用编辑
+                        emptytext: "空文本",          //空值的默认文本
+                        mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                        validate: function (v) {
+                            if (isNaN(v)) return '必须是数字';
+                            var age = parseInt(v);
+                            if (age <= 0) return '必须是正整数';
+                        }
+                    }
+                }, 
+             
+                {
+                  field: 'showstyle',
+                  title: '样式',
+                  sortable: true,
+                  align: 'center',//单元格中的数据水平方向的位置，'left', 'right', 'center'
+                  width:95,
+                  editable: {
+                                    type: "select",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                                    source: [{ value: '', text: "--请选择--" }, { value: 'mokuai4_biao1', text: "list2样式1" },{value:'mokuai4_biao2',text:"list2样式2"},{value:'mokuai4_biao3',text:"list2样式3"},
+                                    		 {value:'r_mokuai1_bg r_mokuai1_b1',text:"list3样式1"},{value:'r_mokuai1_bg r_mokuai1_b2',text:"list3样式2"},
+                                    		 {value:'r_mokuai1_bg r_mokuai1_b3',text:"list3样式3"},{value:'r_mokuai1_bg r_mokuai1_b4',text:"list3样式4"}
+                                    				  ],
+                                    title: "样式",              //编辑框的标题
+                                    disabled: false,             //是否禁用编辑
+                                    emptytext: "空文本",          //空值的默认文本
+                                    mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                                   
+                                }
+              },
+      
+              {
+                 field: 'tendency',
+                 title: '数据趋势',
+                 sortable: true,
+                 align: 'center',//单元格中的数据水平方向的位置，'left', 'right', 'center'
+                 width:123,
+                 editable: {
+                     type: "select",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                     source: [{ value: 3, text: "---" },{ value: 0, text: "下降" }, {value:1,text:"上升"}],
+                     title: "是否隐藏",              //编辑框的标题
+                     disabled: false,             //是否禁用编辑
+                     emptytext: "空文本",          //空值的默认文本
+                     mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                    
+                 }
+             }, {
+                  field: 'tendencycompletely',
+                  title: '百分比',
+                  sortable: true,
+                  //align: 'left',//单元格中的数据水平方向的位置，'left', 'right', 'center'
+                  width:100,
+                  editable: {
+                      type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                      title: "百分比",              //编辑框的标题
+                      disabled: false,             //是否禁用编辑
+                      emptytext: "空文本",          //空值的默认文本
+                      mode: "popup",            //编辑框的模式：支持popup和inline两种模式，默认是popup
+                     
+                  }
+              }
+                ],
+                //注册加载子表的事件。注意下这里的三个参数！
+                /*                onExpandRow: function (index, row, $detail) {
+                                     var info = row.price;
+                                    $detail.html(info);
+                                }*/
+            });
+        };
+
+        function paramsMatter(value,row,index) {
+            var span=document.createElement('span');
+            span.setAttribute('title',value);
+            span.innerHTML = value;
+            return span.outerHTML;
+        }
+        function formatTableUnit(value, row, index) {
+            return {
+                css: {
+                    "white-space": 'nowrap',
+                    "text-overflow": 'ellipsis',
+                    "overflow": 'hidden'
+                }
+            }
+        }
+
+        //得到查询的参数，启用服务端分页时才需要
+        oTableInit.queryParams = function (params) {
+            var temp = {//这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.pageSize,   //页面大小
+                offset: params.pageNumber,  //页码
+                search:params.searchText,
+                //pmenuname:$("#pmenuname").val(),
+                carousecode:carousecode,
+
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+
+        return oInit;
+    };
+    // 删除按钮事件
+    $("#btn_delete").on("click", function() {
+
+        if(!confirm("是否确认删除？"))
+            return;
+        var rows = $("#tb_departments").bootstrapTable('getSelections'); // 获得要删除的数据
+        if(rows.length == 0) { // rows 主要是为了判断是否选中，下面的else内容才是主要
+            alert("请先选择要删除的记录!");
+            return;
+        } else {
+            var ids = new Array(); // 声明一个数组
+            $(rows).each(function() { // 通过获得别选中的来进行遍历
+                ids.push(this.id); // menuid为获得到的整条数据中的一列
+            });
+		
+            //调用ajax删除选中的行
+            deleteMs(ids)
+        }
+
+    });
+    // 删除,删除数据库内容，刷新表格即可删除
+    function deleteMs(ids) {
+    			
+        $.ajax({
+            dataType: "JSON",
+            type: "GET",
+            url: local_host+"deleteById?ids="+ids,
+            success: function(data) {
+                if(data) {
+                    alert(data.message+"共删除了"+data.data+"条数据");
+                    $('#tb_departments').bootstrapTable('refresh', {
+                        url: local_host+'/list'
+                    });
+                    window.parent.refresh();//刷新树
+                }
+            },
+            error:function () {
+                alert("Error");
+            }
+        });
+    }
+
+    //点击添加时打开模态框
+    $("#btn_add").on("click", function() {
+        $("#myModal").modal("show");
+    });
+    //关闭模态框时清空模态框数据
+    $(function (){
+        $('#myModal').on('hidden.bs.modal', function (){
+            $(':input','#form_data').not(':button,:submit,:reset').val('').removeAttr('checked').removeAttr('checked');
+        });
+    });
+
+    // 添加入库操作
+    function add_info() {
+        var args={
+        	name: $("#name").val(),
+            url: $("#url").val(),
+            lorder:$("#lorder").val(),
+            value:$("#value").val(),
+            value1:$("#value1").val(),
+            value2:$("#value2").val(),
+            value3:$("#value3").val(),
+            value4:$("#value4").val(),
+            image:$("#image").val(),
+            lorder:$("#lorder").val(),
+            urls:$("#urls").val(),
+            isifram:$("#isifram").val(),
+            showstyle:$("#showstyle").val(),
+            tendency:$("#tendency").val(),
+            carousecolumncode:$("#carousecolumncode").val(),
+            tendencycompletely:$("#tendencycompletely").val(),
+            carousecode:carousecode,
+            carousename:carousename,
+        
+        };
+        if (!$.trim(args.name)) {
+            alert( '名称不能为空');
+            return false;
+        }else if (!$.trim(args.value)) {
+            alert( '数据值不能为空');
+            return false;
+        
+        }
+        $("#myModal").modal("hide");
+        $.ajax({
+            dataType: "JSON",
+            contentType: "application/json;charset=UTF-8",
+            type: "POST",
+            data: JSON.stringify(args),
+            url: local_host+"save",
+            success: function(data) {
+                if(data) {
+                    alert(data.message);
+                    $('#tb_departments').bootstrapTable('refresh', {
+                        url: local_host+'list',
+                    });
+                    window.parent.refresh();//刷新树
+                }
+            },
+            error:function () {
+                alert("Error");
+            }
+        });
+
+    }
+    //点击添加时打开模态框
+    $("#btn_addcls").on("click", function() {
+        $("#myClsModal").modal("show");
+    });
+   
+    //导出的数据格式
+    function DoOnMsoNumberFormat(cell, row, col) {
+        var result = "";
+        if (row > 0 && col == 0)
+            result = "\\@"; //txt文本格式
+        return result;
+    }
+
+    //避免出现双线竖滚动条
+    function tableHeight() {
+        var window_height = $(window).height();
+        var obj_off_y = $(".btn-group").offset().top;
+        var result_height = window_height - obj_off_y-1;
+        return result_height;
+    }
+    
+
+</script>
+</html>

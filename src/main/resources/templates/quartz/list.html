@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script th:src="@{/Content/assets/lib/jquery-2.1.1.min.js}"></script>
+<script th:src="@{/Content/assets/lib/aYin/aYin.js}"></script>
+<script th:src="@{/Content/assets/lib/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/Content/assets/init/loadFiles.js}"></script>
+<script th:src="@{/Content/js/util/StringUtils.js}"></script>
+<script th:src="@{/Content/js/datepicker/WdatePicker.js}"></script>
+<link th:href="@{/Content/js/datepicker/skin/WdatePicker.css}"
+	rel="stylesheet" />
+<link
+	th:href="@{/Content/js/bootstrap/css/bootstrap-datetimepicker.min.css}"
+	rel="stylesheet" />
+</head>
+<script type="text/javascript">
+	//停止定时任务
+	function stop(id){
+		var msg = "您真的确定要停用吗？\n\n请确认！";
+		if (confirm(msg)==true){
+			window.location.href="/QuartzDeploy/setStatus/"+id+"/0";
+		}else{
+			return false;
+		}
+	 
+	}
+	
+	//启动定时任务
+	function begin(id){
+		var msg = "您真的确定要启用吗？\n\n请确认！";
+		if (confirm(msg)==true){
+			window.location.href="/QuartzDeploy/setStatus/"+id+"/1";;
+		}else{
+			return false;
+		}
+	 
+	}
+
+	function deleteitems(id){
+		var msg = "您真的确定要删除吗？\n\n请确认！";
+		if (confirm(msg)==true){
+			window.location.href="/QuartzDeploy/delect/"+id;
+		}else{
+			return false;
+		}
+	  
+	}
+	var url ="/QuartzDeploy/list?";
+	var pageUrl = "/QuartzDeploy/list?pageNum=";
+	
+	
+	var pageNum= [[${pageNum}]];   //当前页数
+	var totalPage = [[${TotalPages}]]; //总共页数
+	
+	
+	//根据表单form获得查询url的条件
+	function getFormParams(serId){
+		return serializeNotNull($("#search_form").serialize());
+	}
+	
+	//获取查询url
+	function searchUrl(pageNum){
+		return pageUrl+pageNum+"&"+getFormParams("#search_form");
+	}
+	
+	//搜索
+	function search(){
+		var form_data = getFormParams("#search_form");
+		window.location.href=url+form_data;
+	}
+
+	//第一页
+	function firstPage(){
+	    if(1==pageNum){
+	        alert("已经是首页了");
+	    }else{
+	    	pageNum = 1 ;
+			window.location.href=searchUrl(pageNum);
+	    }
+	}
+	//上一页
+	function prePage(){
+	    if(1==pageNum){
+	        alert("已经是首页了");
+	    }else{
+		    pageNum--;
+		    window.location.href=searchUrl(pageNum);
+	    }
+	}
+	//下一页
+	function nextPage(){
+	    if(pageNum==totalPage){
+	        alert("已经是尾页了");
+	    }else{
+		    pageNum++;
+		    window.location.href=searchUrl(pageNum);
+	    }
+	}
+	//尾页
+	function lastPage(){
+	    if(pageNum==totalPage){
+	        alert("已经是尾页了");
+	    }else{
+	    	 pageNum=totalPage;
+	    	 window.location.href=searchUrl(pageNum);
+	    }
+     }
+
+	//刷新
+	function myrefresh(){
+	  window.location.reload();
+	}
+
+</script>
+
+<body>
+
+	<div class="top-barcenter">
+		<ul class="breadcrumb top-breadcrumb">
+			<li><i class="fa fa-home"></i></li>
+			<li>配置管理</li>
+			<li>定时调度任务</li>
+		</ul>
+		<ul class="top-toolbar"></ul>
+	</div>
+	<input type="text" id="itemname" name="itemname" hidden="false">
+	<div class="main-wrap">
+		<div class="toolbar-wrap">
+			<!--搜索按钮结合体 start-->
+			<div class="search-box">
+				<div class="row search-input">
+					<div class="col-xs-3">
+						<a class="btn btn-default" href="/QuartzDeploy/add"><span
+							class="fa fa-file"></span> 新建</a>
+						<!--  <button class="btn btn-default" onclick="myrefresh()"><span class="fa fa-sync-alt"></span> 刷新 </button>	 -->
+					</div>
+					<form class="" id="search_form" role="search"
+						action="/QuartzDeploy/list" method="get">
+						<div class="col-xs-2">
+							<div class="input-group"></div>
+						</div>
+						<div class="col-xs-2">
+							<div class="input-group"></div>
+						</div>
+						<div class="col-xs-2">
+							<input type="text" class="form-control " id="nameid" name="name"
+								th:value="${searchList['name']}" placeholder="请输入任务名称">
+						</div>
+						<div class="col-xs-2">
+							<input type="text" class="form-control" id="cronid" name="cron"
+								th:value="${searchList['cron']}" placeholder="请输入任务执行时间规则">
+						</div>
+						<div class="col-xs-1">
+							<input type="button" class="search-btn btn btn-primary"
+								onclick="search()" style="width: 100%;" value="搜索">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="scroll-wrapper">
+			<!-- 开始列表滚动条 -->
+			<table class="table table-hover table-striped ">
+				<thead>
+					<tr>
+						<th width="30">序号</th>
+						<th width="120">任务名称</th>
+						<th width="80">时间规则</th>
+					    <th width="110">项目英文名称</th>
+					    <th width="100">项目名称</th>
+						<th width="90">创建时间</th>
+					
+
+						<th width="30">状态</th>
+						<th width="100">备注</th>
+						<th width="66">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr th:each="quartzDeploy,quartzDeployStat : ${quartzDeployList}">
+						<td th:text="${quartzDeployStat.count} + (${pageNum} -1)*${size} "></td>
+						<td th:text="${quartzDeploy.name}"></td>
+						<td th:text="${quartzDeploy.cron}"></td>
+						<td th:text="${quartzDeploy.projectcode}"></td>
+						<td th:text="${quartzDeploy.projectname}"></td>
+						<td
+							th:text="${#dates.format(quartzDeploy.createtime,'yyyy-MM-dd HH:mm:ss')}"></td>
+						
+
+						<td th:if="${quartzDeploy.status} == '1' " th:text="正常"></td>
+						<td th:if="${quartzDeploy.status} != '1' " th:text="停止"></td>
+
+						<td th:text="${quartzDeploy.remark}"></td>
+						<td><a
+							th:href="@{'/QuartzDeploy/updateview/'+${quartzDeploy.id}}"><i
+								class="fa fa-edit fa-button"></i></a> <a
+							th:if="${quartzDeploy.status} == '1' "
+							th:onclick="stop([[${quartzDeploy.id}]]);"><i
+								class="fa fa-stop-circle fa-button"></i></a> <a
+							th:if="${quartzDeploy.status} == '0' "
+							th:onclick="begin([[${quartzDeploy.id}]]);"><i
+								class="fa fa-play-circle fa-button"></i></a> <a
+							href="javascript:void(0)"
+							th:onclick="deleteitems([[${quartzDeploy.id}]]);"><i
+								class="fa fa-trash-alt fa-button"></i></a></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div align="right">
+
+				<ul class="pagination">
+					<li><a href="javascript:void(0)" onclick="firstPage()">首页</a></li>
+					<li><a href="javascript:void(0)" onclick="prePage()">上一页</a></li>
+					<li><a href="javascript:void(0)" onclick="nextPage()">下一页</a></li>
+					<li><a href="javascript:void(0)" onclick="lastPage()">尾页</a></li>
+					<li>&ensp;
+						<td th:text="${pageNum}"></td>/
+						<td th:text="${TotalPages}"></td>&ensp;页
+					</li>
+					<li>总&ensp;
+						<td th:text="${allnum}"></td>&ensp;条&ensp;&ensp;&ensp;&ensp;&ensp;
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script th:inline="javascript">
+    var message = [[${message}]];
+    
+    if(message=="delectsuccess"){
+    	message="删除成功！"
+    }
+    if(message=="updatesuccess"){
+    	message="修改成功！"
+    }
+    if(message=="savesuccess"){
+    	message="保存成功！"
+    }
+    if(message=="delectfailure"){
+    	message="删除失败！"
+    }
+    if(message=="updatefailure"){
+    	message="修改失败！"
+    }
+    if(message=="savefailure"){
+    	message="保存失败！"
+    }
+    if(message == "setstatussuccess"){
+    	message = "任务状态设置成功";
+    }
+    if(message == "setstatusfailure"){
+    	message = "任务启动失败";
+    }
+    if(message != null && message != ""){								    		
+   		alert(message);							    								   		 
+  	}								   
+</script>
+</body>
+</html>
+<!-- 列表滚动条样式和js -->
+<style>
+.scroll-wrapper {
+	overflow: auto;
+	width: 100%;
+	height: 300px;
+}
+</style>
+<script>
+$(window).load(function(){
+	$.timer.set("autoResize",function(){
+		
+		$(".scroll-wrapper").height(document.body.clientHeight-148);
+	},500)
+	
+})
+</script>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>效益测算 - 定时任务</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--3. x-editable (bootstrap 3) -->
+    <link href="/lib/bootstrap3-editable-1.5.1/css/bootstrap-editable.css" rel="stylesheet">
+    <script src="/lib/bootstrap3-editable-1.5.1/js/bootstrap-editable.js"></script>
+
+    <!--4. bootstrap-table 启用edit-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/editable/bootstrap-table-editable.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--7. 表格数据导出-->
+    <script src="/lib/tableExport-1.20.1/tableExport.min.js"></script>
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <!--8. 日期控件-->
+    <script src="/lib/My97DatePicker/WdatePicker.js"></script>
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+</head>
+<body>
+
+
+
+<div>
+    <ul class="breadcrumb ">
+        <li><i class="fa fa-home"></i></li>
+        <li>效益测算</li>
+        <li>定时任务</li>
+    </ul>
+    <ul class="top-toolbar"></ul>
+</div>
+
+
+
+<div style="margin: 0 10px;">
+
+
+    <table id="table" class="table table-hover table-condensed" style="table-layout: fixed"
+           data-search="true" data-show-search-button="true" data-search-on-enter-key="true"
+           data-show-columns="true"
+           data-unique-id="id"
+           data-id-field="id"
+           data-editable-url="/DingShi/edit">
+        <thead>
+        <tr>
+            <th data-field="name" data-width="10" data-width-unit="em" data-halign="center">类名</th>
+            <th data-field="remark" data-width="10" data-width-unit="em" data-halign="center" data-editable="true">名称</th>
+            <th data-field="cron" data-width="10" data-width-unit="em" data-halign="center" data-align="center" data-editable="true">启动时间表达式</th>
+            <th data-field="表达式" data-width="10" data-width-unit="em" data-halign="center" data-align="center">启动时间表达式</th>
+            <th data-field="状态" data-width="5" data-width-unit="em" data-halign="center" data-align="center">状态</th>
+            <th data-width="10" data-width-unit="em" data-halign="center" data-align="center" data-formatter="actionFormatter">操作</th>
+            <th data-field="sort" data-width="2" data-width-unit="em" data-halign="center" data-align="center" data-visible="false">排序</th>
+
+            <th data-field="beginTime" data-width="10" data-width-unit="em" data-halign="center" data-visible="false">最近启用时间</th>
+            <th data-field="createTime" data-width="10" data-width-unit="em" data-halign="center" data-visible="false">createTime</th>
+            <th data-field="updateTime" data-width="10" data-width-unit="em" data-halign="center" data-visible="false">updateTime</th>
+            <th data-field="projectCode" data-width="10" data-width-unit="em" data-halign="center" data-visible="false">projectCode</th>
+            <th data-field="projectName" data-width="10" data-width-unit="em" data-halign="center" data-visible="false">projectName</th>
+        </tr>
+        </thead>
+    </table>
+
+
+</div>
+
+
+
+<script th:inline="javascript">
+    var defaultDay = /*[[${day}]]*/'2020-09-01'
+    var $table = $('#table')
+
+
+    $(function () {
+        $table.bootstrapTable({
+            url: "/DingShi/data",
+            height: window.innerHeight - $('#table').position().top,
+            onEditableSave: function () {
+                $table.bootstrapTable('refresh')
+            },
+            onEditableShown: function (field, row, $el, editable) {
+                editable.input.$input[0].value = row[field]
+            }
+        })
+
+
+
+
+        // 启动
+        $("body").on("click", ".btn-run", function () {
+            if (confirm('确定启动吗?')) {
+                var id = $(this).attr("data-id")
+                $.ajax({
+                    type: "post",
+                    url: "/QuartzDeploy/updateState/",
+                    data: {id: id, state: 1},
+                    success: function () {
+                        $table.bootstrapTable('refresh')
+                    }
+                })
+            }
+        })
+
+
+        // 停止
+        $("body").on("click", ".btn-stop", function () {
+            if (confirm('确定停止吗?')) {
+                var id = $(this).attr("data-id")
+                $.ajax({
+                    type: "post",
+                    url: "/QuartzDeploy/updateState/",
+                    data: {id: id, state: 0},
+                    success: function () {
+                        $table.bootstrapTable('refresh')
+                    }
+                })
+            }
+        })
+
+
+
+        // 删除
+        $("body").on("click", ".btn-delete", function () {
+            if (confirm('确定删除该定时任务吗?')) {
+                var id = $(this).attr("data-id")
+                $.ajax({
+                    type: "post",
+                    url: "/QuartzDeploy/delete",
+                    data: {id: id},
+                    success: function () {
+                        $table.bootstrapTable('refresh')
+                    }
+                })
+            }
+        })
+
+
+        // 手动运行一次定时任务
+        $("body").on("click", ".btn-do", function (event) {
+            var $btn = $(event.target)
+            var day = prompt("请输入一个日期", defaultDay)
+            if (day != null) {
+                if (confirm('确定运行一次该任务吗?')) {
+                    $btn.attr("disabled", true).text(" 执行中...")
+
+                    $.ajax({
+                        url: "/DingShi/run",
+                        data: {day: day},
+                        success: function (msg) {
+                            $btn.removeAttr("disabled").text("")
+                        },
+                        error: function () {
+                            $btn.removeAttr("disabled").text("")
+                        }
+                    })
+                }
+            }
+        })
+
+
+    })
+
+
+
+
+    function actionFormatter(value, row, index) {
+        var divBtnGroup = $('<div class="btn-group"></div>')
+        var btnRun = $('<button type="button" title="运行" class="fa fa-play btn btn-default btn-run"> </button>')
+        var btnStop = $('<button type="button" title="停止" class="fa fa-stop btn btn-default btn-stop"> </button>')
+        var btnDelete = $('<button type="button" title="删除" class="fa fa-trash-o btn btn-default btn-delete"> </button>')
+        var btnAction = $('<button type="button" title="手动运行一次定时任务" class="fa fa-calendar btn btn-default btn-do"> </button>')
+        btnRun.attr("data-id", row.id)
+        btnStop.attr("data-id", row.id)
+        btnDelete.attr("data-id", row.id)
+        btnAction.attr("data-id", row.id)
+        divBtnGroup.append(btnRun, btnStop, btnDelete, btnAction)
+
+        if (row.state == 1) {
+            btnRun.attr("disabled", true)
+            btnStop.removeAttr("disabled")
+        }
+
+        if (row.state == 0) {
+            btnRun.removeAttr("disabled")
+            btnStop.attr("disabled", true)
+        }
+
+        return divBtnGroup[0].outerHTML
+    }
+
+</script>
+
+
+
+</body>
+</html>

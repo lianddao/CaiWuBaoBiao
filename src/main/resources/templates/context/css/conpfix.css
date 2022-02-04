@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+
+
+.sideNav li i{ float:left; background-image:url(../images/sidebar_icon.png);  background-repeat:no-repeat; width:23px; height:23px; display:block; margin-top:14px;  margin-right:10px; }
+
+
+.icon_1{ background-position:0 0;}
+.icon_2{ background-position:0 -42px;}
+.icon_3{ background-position:0 -85px;}
+.icon_4{ background-position:0 -128px;}
+.icon_5{ background-position:0 -170px;}
+.icon_6{ background-position:0 -210px;}
+.icon_7{ background-position:0 -252px;}
+.icon_8{ background-position:0 -296px;}

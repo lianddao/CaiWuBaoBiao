@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>惠州石化工业互联网平台</title>
+	    <meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--<link rel="stylesheet" href="contextechars/css/main.css" />
+		<link rel="stylesheet" href="contextechars/fontawesome-pro/css/fontawesome.css" />
+		<link rel="stylesheet" href="contextechars/fontawesome-pro/css/fonts-teshu.css" />-->
+		
+		<script type="text/javascript" src="contextechars/js/jquery-1.7.min.js"></script>
+		<script  type="text/javascript"  src="contextechars/js/echarts/js/echarts.min.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/common.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/js/echarts.min.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/js/china.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/areaChartsJson.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/barChartsJson.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/lineChartsJson.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/mapChartsJson.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/roseChartsJson.js"></script>
+		<script type="text/javascript" src="contextechars/js/echarts/lineAndBarChartsJson.js"></script>
+	
+		<!--惠州石化定制样式-->
+	<link href="contextsy/css/style.css" rel="stylesheet">
+	
+	
+	</head>
+	
+	<body>
+		<div class="warper">
+			<div class="header">
+				<div id="logo" class="logo">惠州石化工业互联网平台</div>
+			    <div id="nav_cont" class="nav_cont">
+			    	<div class="nav_cont_l"></div>
+			    	<div class="nav_cont_c">
+			    		<ul class="nav_list">
+			    			<li><a href="#" class="moren">生产管理</a></li>
+			    			<li><a href="#">生产优化</a></li>
+			    			<li><a href="#">设备健康</a></li>
+			    			<li><a href="#">工程服务</a></li>
+			    			<li><a href="#">经营决策</a></li>
+			    			<li><a href="#">技术分析</a></li>
+			    		</ul>
+			    		<ul class="navigation_r">
+			    			<li class="weather"><span class="icn_wea"></span><i class="font_wea">16~21°C</i></li>
+			    			<li class="line"></li>
+			    			<li class="huanbao">绿色环保天数<b>18</b>天</li>
+			    		</ul>
+			    	</div>
+			    </div>	
+			</div>
+			<div class="content">
+				<div id="content_left" class="content_left">
+				    <div class="panel">
+						<div class="panel_top_mid"></div>
+				    	<div class="panel_footer"></div>
+						<div class="left_mokuai1"> <!--------技经指标------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">技经指标</div>
+							</div>
+							<div  id="columntype1" class="charts_box" >
+								<ul class="mokuai1_list" id="h_pro_list">
+									<li><span class="mokuai1_li_bg">866</span><i class="mokuai1_li_font">综合商品率</i></li>
+									<li><span class="mokuai1_li_bg">403</span><i class="mokuai1_li_font">高附加值产品收率</i></li>
+									<li><span class="mokuai1_li_bg">231</span><i class="mokuai1_li_font">轻油收率</i></li>
+									<li><span class="mokuai1_li_bg">119</span><i class="mokuai1_li_font">加工损失</i></li>
+								
+								</ul>
+								
+							</div>
+							
+		
+						</div>
+						<div class="left_mokuai2"><!--------左侧模块2------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">原油进场加工</div>
+							</div>
+							
+							<div class="charts_box"  id="columntype2">
+							
+								 <img src="contextsy/images/chart1_1.png" width="100%" height="100%" >
+							</div>
+							
+						</div>
+						<div class="left_mokuai3"><!--------左侧模块3------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">计划完成情况</div>
+							</div>
+							
+							<div class="charts_box"  id="columntype3">
+							
+								<img src="contextsy/images/chart2_1.png" width="100%" height="100%">
+							</div>
+							
+						</div>
+						<div class="left_mokuai4"><!--------左侧模块4------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">公用工程消耗量</div>
+							</div>
+							<div  id="columntype4" class="charts_box" >
+								<ul class="mokuai4_list">
+									<li><span class="mokuai4_biao1"></span><i class="mokuai4_font">总量:1150</i><i class="shangsheng">上升:11.5%</i></li>
+									<li><span class="mokuai4_biao2"></span><i class="mokuai4_font">总量:1150</i><i class="xiajiang">下降:11.5%</i></li></li>
+									<li><span class="mokuai4_biao3"></span><i class="mokuai4_font">总量:1150</i><i class="shangsheng">上升:11.5%</i></li></li>
+								</ul>
+							</div>
+							
+							
+						</div>
+				    </div>	
+				</div>
+				
+				<div class="content_marp">
+					<div class="panel">
+						<div class="panel_top_mid"></div>
+						<div class="panel_footer"></div>						
+						 <!--<iframe src="http://10.152.72.72:8088/#/levelOn?lt=1&eme=1&sub=1&oil=1&poi=1&tool=1&rw=1&wea=1&lat=22.754&lng=114.60602" width="100%"  height="985px" style=" min-width:1110px;" id="contentWrap" frameborder="0" scrolling="auto" name="mainFrame"></iframe>
+  						
+  						--><img src="contextsy/images/map.jpg" width="100%" height="100%" class="marp_img">
+						<div class="floating">
+							<div class="sousuo">
+								<input type="text" name="" id="" value="请输入点位名称" class="sousuo_input" />
+								<button class="sousuo_button" type="button">搜素点位</button>
+							</div>
+							<ul class="sousuo_list">
+								<li><span class="wenjian"></span><i class="sousuo_font">厂区专题图层</i></li>
+								<li><span class="wenjian"></span><i class="sousuo_font">世界船舶图层</i></li>
+								<li><span class="wenjian"></span><i class="sousuo_font">环保监测图层</i></li>
+								<li><span class="wenjian"></span><i class="sousuo_font">视频监控</i></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<div class="content_right">
+					<div class="panel">
+						<div class="panel_top_mid"></div>
+						<div class="panel_footer"></div>
+						<div class="right_mokuai1"> <!--------右侧模块1------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">安全</div>
+							</div>
+							<div  id="columntype5"  class="charts_box">
+							<ul class="R_mokuai1_list">
+								<li><span class="r_mokuai1_bg r_mokuai1_b1">866</span><i class="r_mokuai1_font">正在建设</i></li>
+								<li><span class="r_mokuai1_bg r_mokuai1_b2">403</span><i class="r_mokuai1_font">正在生产</i></li>
+								<li><span class="r_mokuai1_bg r_mokuai1_b3">231</span><i class="r_mokuai1_font">停工停产</i></li>
+								<li><span class="r_mokuai1_bg r_mokuai1_b4">119</span><i class="r_mokuai1_font">长期停产停建</i></li>
+							</ul>	
+							</div>
+							
+							
+						</div>
+						<div class="right_mokuai2"> <!--------右侧模块2------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">废气排放在线监测数据</div>
+							</div>
+							<div class="charts_box" id="columntype6">
+							<table border="0" cellspacing="0" cellpadding="0" class="tytable">
+								<tr><th>排口</th><th>时间</th><th>So2</th><th>NOX</th><th>颗粒物</th></tr>
+								<tr><td>1</td><td>2021/01/01</td><td>0</td><td>0.11</td><td>0</td></tr>
+								<tr><td>23</td><td>2021/01/01</td><td>0</td><td>0.67</td><td>0</td></tr>
+								<tr><td>67</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+								<tr><td>47</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+								<tr><td>22</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+							</table>
+							</div>
+					
+							
+						
+						</div>
+						<div class="right_mokuai3"> <!--------右侧模块3------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">设备</div>
+							</div>
+							<div class="charts_box" id="columntype7">
+								
+								<img src="contextsy/images/chart3_1.png" width="100%" height="100%" class="R_mokuai3_IMG">
+							</div>
+						</div>
+						<div class="right_mokuai4"> <!--------右侧模块4------------>
+							<div class="mokui_tit">
+								<div class="mokui_tit_l"></div>
+								<div class="mokui_tit_m"></div>
+								<div class="mokui_tit_r"></div>
+								<div class="tit_font">财务、商务（原油、成品油市场价）</div>
+							</div>
+							
+							 <div  class="charts_box" id="columntype8">
+                 				<table border="0" cellspacing="0" cellpadding="0" class="tytable">
+								<tr><th>排口</th><th>时间</th><th>So2</th><th>NOX</th><th>颗粒物</th></tr>
+								<tr><td>1</td><td>2021/01/01</td><td>0</td><td>0.11</td><td>0</td></tr>
+								<tr><td>23</td><td>2021/01/01</td><td>0</td><td>0.67</td><td>0</td></tr>
+								<tr><td>67</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+								<tr><td>47</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+							    <tr><td>67</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+								<tr><td>47</td><td>2021/01/01</td><td>0</td><td>0</td><td>0</td></tr>
+							</table>
+		                    </div>
+	
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+<script>
+
+
+
+
+$(document).ready(function(){	
+				  var he1= $(window).height();                                  //浏览器当前窗口可视区域高度
+				  var wi1=$(window).width();                                     //浏览器当前窗口可视区域宽度
+				  var wi2=  $(document).width();
+				  var he2=  $(document).height();
+	
+				  var logowith=wi1*0.19+9;
+				  var cpw5=  $("#columntype1").width();
+				  var cph5=  $("#columntype1").height();
+				  alert(wi1-logowith+"==1="+logowith);
+				  
+				  $("logo").css({"width":logowith+"px"});
+				  $("nav_cont").css({"left":logowith+"px","width":wi1-logowith+"px"});
+				  
+				  $("body").css({"width":wi1+"px"});
+				  
+				  var columnwidth=wi1*0.19-11;  //中心左右8个栏目宽度
+				  var columnheight=he1*0.19; //中心左右8个栏目高度
+				  var leftwidth=wi1*0.20-10;  //left 宽度
+				  var leftheight=he1*0.9-11;  //left 宽度
+				  alert(leftwidth+"==="+leftheight);
+				  $("#content_left").css({"width":leftwidth+"px"});
+					 
+				  
+				  $("#columntype1").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype2").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype3").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype4").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype5").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype6").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype7").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  $("#columntype8").css({"width":columnwidth+"px","height":columnheight+"px"});
+				  
+			
+				 
+				  $("#columntype1").width(columnwidth);
+				  
+				  $("#columntype1").height(columnheight);
+				  
+				  var cpw6=  $("#columntype1").width();
+				  var cph6=  $("#columntype1").height();
+			
+				 // uilistScroll("columntype1", 230, 2000, 4);
+				});
+var MyMarhq = '';
+function uilistScroll(divid, hei, speed, len) {//表单轮播
+		MyMarhq = '';
+    clearInterval(MyMarhq);
+
+    var item = $('#' + divid).find('ul').find("li");
+    var tblTop = 0;
+    var qum = 0;
+    var f = 0;
+    $('#' + divid).find('ul').find("li").hide();//隐藏所有li
+    if(tblTop == 0){
+	 	for( var i=0; i<len; i++ ){    	                	
+		    item.eq(i).show();//显示前len个li
+	   }		  
+    }
+    if(item.length>len){
+    qum= Math.ceil(item.length/len)-1;
+    function Marqueehq() {
+    				  $('#' + divid).find('ul').find("li").hide();
+    	                if (tblTop < qum) {
+    	                	tblTop += 1;
+    	           	        f = tblTop*len;    	                    
+    	                } else {
+	                		tblTop = 0;
+	         	            f = 0;
+    	                }
+    	                for( var i=f; i<(tblTop+1)*len; i++ ){    	                	
+    	                	item.eq(i).show();
+    	                }
+    	            }
+    MyMarhq = setInterval(Marqueehq, speed);  
+    // 鼠标移上去取消事件 
+    $('#' + divid).find('ul').hover(function () {
+        clearInterval(MyMarhq);
+    }, function () {
+        clearInterval(MyMarhq);
+        MyMarhq = setInterval(Marqueehq, speed);
+    })
+    }
+}
+
+</script>
+    </html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>[[${category}]] 配置管理</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--3. x-editable (bootstrap 3) -->
+    <link href="/lib/bootstrap3-editable-1.5.1/css/bootstrap-editable.css" rel="stylesheet">
+    <script src="/lib/bootstrap3-editable-1.5.1/js/bootstrap-editable.js"></script>
+
+    <!--4. bootstrap-table 启用edit-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/editable/bootstrap-table-editable.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--7. 表格数据导出-->
+    <script src="/lib/tableExport-1.20.1/tableExport.min.js"></script>
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <!--8. 日期控件-->
+    <script src="/lib/My97DatePicker/WdatePicker.js"></script>
+
+    <!--固定列-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+
+    <style>
+        .table-hover > tbody > tr:hover {
+            background-color: unset;
+            box-shadow: 1px 1px 7px blue;
+        }
+        .modal-lg {
+            width: 95vw;
+        }
+
+        .table-gong-shi tr {
+            font-weight: normal;
+        }
+        .table-gong-shi tr:hover {
+            font-weight: bold;
+            color: #000;
+            background-color: #dddddd40;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<div>
+    <ul class="breadcrumb ">
+        <li><i class="fa fa-home"></i></li>
+        <li>编码配置</li>
+    </ul>
+    <ul class="top-toolbar"></ul>
+</div>
+
+
+
+<!-- 修改公式数据页面弹出框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改公式</h4>
+            </div>
+            <div class="modal-body">
+                <iframe id="frame1" style="width: 100%; height: 60vh;"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btnSave">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 新增项目弹出层 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新增项目</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>所属目录</td>
+                        <td>
+                            <select id="select2">
+                                <option th:each="v, state : ${category_data}" th:selected="${v == category}" th:value="${v}">[[${v}]]</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>编码</td>
+                        <td>
+                            <input id="txtAutoCode" type="text" placeholder="自动编码" readonly style="border:none;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>名称</td>
+                        <td>
+                            <input id="txtName" type="text" placeholder="项目名称" autocomplete="off">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="button2">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#select2").change(function () {
+            var category = event.target.value
+            $.ajax({
+                url: "/PeiZhi/getAutoCode",
+                data: {category: category},
+                success: function (data) {
+                    $("#txtAutoCode").val(data)
+                    $("#txtName").val("")
+                }
+            })
+        })
+
+        $("#button2").click(function () {
+            $txtName = $("#txtName")
+            var category = $("#select2").val()
+            var name = $.trim($txtName.val())
+            var code = $("#txtAutoCode").val()
+
+            if (name.length > 0) {
+                $.ajax({
+                    type: 'post',
+                    url: "/PeiZhi/insertOne",
+                    data: {category: category, name: name, code: code},
+                    success: function (data) {
+                        $table.bootstrapTable('refresh')
+                    }
+                })
+            } else {
+                $txtName.css({border: "solid 1px red"})
+            }
+        })
+    })
+</script>
+
+
+<div id="toolbar">
+    <div class="form-inline" role="form">
+        <div class="form-group">
+
+            <form action="/PeiZhi/list" id="form1">
+                <select class="form-control" id="selCategory" name="category" onchange="document.getElementById('form1').submit()">
+                    <option value="">所有目录</option>
+                    <option th:each="v, state : ${category_data}" th:selected="${v == category}" th:value="${v}">[[${v}]]</option>
+                </select>
+
+                <div class="checkbox" style="margin-left: 1em;">
+                    <label>
+                        <input type="checkbox" id="cbAll" name="isShowAll" th:checked="${isShowAll}" onchange="document.getElementById('form1').submit()">
+                        显示所有数据
+                    </label>
+                </div>
+
+
+                <span style="margin-left: 2em;">
+                    <i>底稿日期:</i>
+                    <input id="txtTestDay" type="text" class="Wdate"
+                           onclick="WdatePicker({ skin:'whyGreen', dateFmt:'yyyy-MM-dd', maxDate:'%y-%M-{%d}', onpicked: function(dp){changeSearch(dp)} })"
+                           autocomplete="off" style="width:7em; height: 1.5em; margin-left: 0.5em; "
+                           placeholder="测试日期" title="测试日期" th:value="${day}" />
+                </span>
+                <input id="txtDate" type="text" name="day" style="display: none">
+                <button id="btnSearchDate" style="display: none">按日期查询</button>
+
+                <button id="btnTestAll" type="button" class="fa fa-fast-forward"> 批量测试</button>
+
+                <button id="btnReset" type="button" class="fa fa-gavel"> 恢复底稿原始数据</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+<a target=""></a>
+
+
+
+<table id="table" class="table table-hover table-condensed" style="table-layout: fixed;"
+       data-classes="table table-bordered"
+       data-search="true" data-show-search-button="true" data-search-on-enter-key="true" data-query-params="queryParams"
+       data-toolbar="#toolbar"
+       data-side-pagination="server"
+       data-pagination="true"
+       data-page-size="100"
+       data-page-list="[50, 100, 200]"
+       data-show-columns="true"
+       data-show-export="true"
+       data-fixed-columns="true"
+       data-fixed-number="4"
+       data-unique-id="id"
+       data-id-field="id"
+       data-editable-url="/PeiZhi/edit">
+    <thead>
+    <tr>
+        <th data-width="2" data-width-unit="em" data-halign="center" data-align="center" data-formatter="序号Formatter">#</th>
+        <th data-field="category" data-width="8" data-width-unit="em" data-halign="center" data-align="center">目录</th>
+        <th data-field="code" data-width="5" data-width-unit="em" data-halign="center" data-align="center">编码</th>
+        <th data-field="name" data-width="15" data-width-unit="em" data-halign="center" data-cell-style="设置列缩进">
+            名称
+            <button type="button" class="fa fa-plus btn-add btn btn-default" style="font-size: xx-small"> 新增</button>
+        </th>
+        <th data-field="公式列表" data-width="800" data-valign="middle" data-halign="center" data-formatter="公式列表Formatter">所属公式</th>
+
+        <th data-field="cengCi" data-width="3" data-width-unit="em" data-halign="center" data-align="center" data-editable="true">缩进</th>
+        <th data-field="isBold" data-width="3" data-width-unit="em" data-halign="center" data-align="center" data-formatter="boldButtonFormatter">加粗</th>
+        <th data-field="isReadonly" data-width="3" data-width-unit="em" data-halign="center" data-align="center" data-formatter="readonlyButtonFormatter">只读</th>
+        <th data-field="isHidden" data-width="3" data-width-unit="em" data-halign="center" data-align="center" data-formatter="hiddenButtonFormatter">隐藏</th>
+        <th data-field="sort" data-width="3" data-width-unit="em" data-halign="center" data-align="center" data-editable="true" data-title-tooltip="默认值为Excle导入时的行号">排序</th>
+    </tr>
+    </thead>
+</table>
+<input type="hidden" id="dataId" />
+
+
+
+<script th:inline="javascript">
+    var $table = $('#table')
+    var $dataId = $('#dataId')
+
+
+    //#region Formatter
+    function boldButtonFormatter(value, row, index) {
+        var cb
+        if (row.isBold == null || row.isBold == false) {
+            cb = $("<input type='checkbox' class='btn-bold' />")
+        } else {
+            cb = $("<input type='checkbox' class='btn-bold' checked />")
+        }
+        cb.attr("title", "加粗")
+        cb.attr("name", 'bold' + index)
+        cb.attr("data-id", row.id)
+        return cb[0].outerHTML
+    }
+
+    function readonlyButtonFormatter(value, row, index) {
+        var cb
+        if (row.isReadonly == null || row.isReadonly == false) {
+            cb = $("<input type='checkbox' class='btn-readonly' />")
+        } else {
+            cb = $("<input type='checkbox' class='btn-readonly' checked />")
+        }
+        cb.attr("title", "只读")
+        cb.attr("name", 'readonly' + index)
+        cb.attr("data-id", row.id)
+        return cb[0].outerHTML
+    }
+
+    function hiddenButtonFormatter(value, row, index) {
+        var cb
+        if (row.isHidden == null || row.isHidden == false) {
+            cb = $("<input type='checkbox' class='btn-hidden' />")
+        } else {
+            cb = $("<input type='checkbox' class='btn-hidden' checked />")
+        }
+        cb.attr("title", "隐藏")
+        cb.attr("name", 'hidden' + index)
+        cb.attr("data-id", row.id)
+        return cb[0].outerHTML
+    }
+
+    function 公式列表Formatter(value, row, index) {
+        if (value.length == 0) {
+            return ""
+        }
+
+        var div = $("<div style='border: solid 1px #333; border-radius: 2px; padding: 0.5em; box-shadow: 1px -1px 1px #333;'></div>")
+        var table = $("<table class='table table-condensed table-gong-shi'></table>")
+        div.append(table)
+
+        $.each(value, function (i, n) {
+
+            var tr = $("<tr></tr>")
+            var td0 = $("<td style='width: 120px'></td>")
+            var td等于 = $("<td style='width: 3em;'>=</td>")
+            var td值 = $("<td style='color: blue; width: 200px; font-size: 1.2em; font-weight: 900'></td>")
+            var td对比结果 = $("<td style='width: 20px; font-size: 1.2em; font-weight: 900'></td>")
+            var td公式 = $("<td style='text-align: left'></td>")
+            table.append(tr)
+
+            var td操作按钮 = $("<td style='text-align: right; width: 120px;'></td>")
+            tr.append(td0, td等于, td值, td对比结果, td公式, td操作按钮)
+
+            td0.text(n.列)
+
+
+            td公式.text(n.单元格公式)
+            td公式.attr("title", n.单元格公式直观值)
+
+
+            td值.attr("底稿值", n.底稿值)
+            td值.attr("title", "底稿值: " + n.底稿值)
+            if (n.单元格公式 == null) {
+                td值.css({color: 'black'}).text(n.列的值)
+                return true
+            }
+
+
+
+            var div = $("<div></div>")
+            var divBtnGroup = $('<div class="btn-group"></div>')
+            var btnTest = $('<button type="button" title="测试" class="fa fa-play btn btn-default btn-test"> </button>')
+            var btnUpdate = $('<button type="button" title="修改" class="fa fa-pencil btn btn-default btn-update" data-toggle="modal" data-target="#myModal"> </button>')
+            var btnDelete = $('<button type="button" title="删除" class="fa fa-trash-o btn btn-default btn-delete"> </button>')
+
+
+
+            btnTest.attr("data-gongshi", n.单元格公式).attr("data-gongshi-id", n.id)
+            btnUpdate.attr("data-id", n.id)
+            btnDelete.attr("data-id", n.id)
+            divBtnGroup.append(btnTest, btnUpdate, btnDelete)
+
+            div.append(divBtnGroup)
+            div.attr("data-id", n.id)
+            td操作按钮.append(div)
+        })
+
+
+        return div[0].outerHTML
+    }
+    //#endregion
+
+
+
+
+
+
+    function queryParams(params) {
+        var arg = {category: /*[[${category}]]*/null, isShowAll: /*[[${isShowAll}]]*/false, day: /*[[${day}]]*/null}
+        params.otherSearch = JSON.stringify(arg)
+        params.day = $("#txtTestDay").val()
+        return params
+    }
+
+
+    $(function () {
+        $table.bootstrapTable({
+            url: "/PeiZhi/data",
+            height: window.innerHeight - $('#table').position().top + $("#toolbar").height(),
+            exportOptions: bootstrapTable默认导出设置('', '效益测算的编码和公式配置'),
+            rowStyle: 设置行样式,
+            onEditableSave: function () {
+                // $table.bootstrapTable('refresh')
+            },
+            onEditableShown: function (field, row, $el, editable) {
+                editable.input.$input[0].value = row[field]
+            },
+            onClickCell: function (field, value, row, $element) {
+                $dataId.val(row.id)
+            }
+        })
+    })
+
+
+
+
+
+    //#region 事件定义
+    $(function () {
+        // 弹出新增对话层
+        $("body").on("click", ".btn-add", function () {
+            // 触发一次编码的获取
+            $.ajax({
+                url: "/PeiZhi/getAutoCode",
+                data: {category: $("#select2").val()},
+                success: function (data) {
+                    $("#txtAutoCode").val(data)
+                    $('#addModal').modal('show')
+                }
+            })
+
+        })
+
+        // 加粗
+        $("body").on("change", ".btn-bold", function () {
+            var value = event.target.checked
+
+            // 更新远程数据
+            $.ajax({
+                type: "post",
+                url: "/PeiZhi/edit",
+                data: {name: 'isBold', value: value, pk: $(this).attr("data-id")},
+                success: function () {
+                    // $table.bootstrapTable('refresh')
+                }
+            })
+        })
+
+
+        // 只读
+        $("body").on("change", ".btn-readonly", function () {
+            var value = event.target.checked
+
+            // 更新远程数据
+            $.ajax({
+                type: "post",
+                url: "/PeiZhi/edit",
+                data: {name: 'isReadonly', value: value, pk: $(this).attr("data-id")},
+                success: function () {
+                    // $table.bootstrapTable('refresh')
+                }
+            })
+        })
+
+
+        // 隐藏
+        $("body").on("change", ".btn-hidden", function () {
+            var value = event.target.checked
+
+            // 更新远程数据
+            $.ajax({
+                type: "post",
+                url: "/PeiZhi/edit",
+                data: {name: 'isHidden', value: value, pk: $(this).attr("data-id")},
+                success: function () {
+                    // $table.bootstrapTable('refresh')
+                }
+            })
+        })
+
+
+        // 批量测试
+        $("#btnTestAll").click(function () {
+            var btnList = $(".btn-test")
+            $.each(btnList, function (i, e) {
+                e.click()
+            })
+        })
+
+
+        // 恢复底稿数据
+        $("#btnReset").click(function () {
+            var scrWidth = screen.availWidth / 2;
+            var scrHeight = screen.availHeight / 2;
+            var self = window.open("/ImportExcel/view", "popup_window", "resizable=0");
+            self.moveTo(0, 0);
+            self.resizeTo(scrWidth, scrHeight);
+        })
+
+
+        // 测试单个公式
+        $("body").on("click", ".btn-test", function () {
+            var gong_shi_id = $(this).attr("data-gongshi-id")
+            var gong_shi = $(this).attr("data-gongshi")
+            var testDay = $("#txtTestDay").val()
+            var itemName = $(this).parents("table").first().parents("td").prev().text()
+            var gongShiName = $(this).parents("tr").eq(0).children("td").eq(0).text()
+            var 序号 = $(this).parents("tr").eq(1).children().eq(0).text()
+            var msg = "#" + 序号 + "          " + itemName + "  →  " + gongShiName + "  =  "
+            var 结果单元格 = $(this).parents("tr").eq(0).children().eq(2)
+            var 底稿值 = 结果单元格.attr("底稿值")
+            var 对比结果单元格 = 结果单元格.next()
+            结果单元格.text('⏱')
+            $.ajax({
+                url: "/GongShi/jiSuan",
+                data: {gong_shi_id: gong_shi_id, gong_shi: gong_shi, testDay: testDay},
+                success: function (result) {
+                    结果单元格.text(result)
+                    if (parseInt(底稿值) == parseInt(result)) {
+                        对比结果单元格.text("✓").css({color: 'green'})
+                    } else {
+                        对比结果单元格.text("✗").css({color: 'red'})
+                    }
+                    console.log(msg + result)
+                },
+                error: function (result) {
+                    结果单元格.text('公式的格式可能有错误')
+                }
+            })
+        })
+
+
+        // 修改公式
+        $("body").on("click", ".btn-update", function () {
+            var id = $(this).attr("data-id")
+            document.getElementById('frame1').src = "/GongShi/update?id=" + id
+        })
+
+
+        // 删除公式
+        $("body").on("click", ".btn-delete", function () {
+            if (confirm('确定删除该公式吗?')) {
+                var id = $(this).attr("data-id")
+                $.ajax({
+                    type: "post",
+                    url: "/GongShi/remove",
+                    data: {id: id},
+                    success: function () {
+                        $table.bootstrapTable('refresh')
+                    }
+                })
+            }
+        })
+
+
+        // 点击弹出框的'保存按钮', 保存公式关联
+        $("#btnSave").click(function () {
+            document.getElementById('frame1').contentWindow.document.getElementById("btnSave").click()
+        })
+
+
+        $("body").on("dblclick", "td[底稿值]", function () {
+            var v = $(this).attr("底稿值")
+            alert("底稿值:  " + v)
+        })
+
+    })
+    //#endregion
+
+
+</script>
+
+<!--为修改弹出层提供辅助事件-->
+<button id="btnCloseModal" onclick="$('#myModal').modal('hide'); $table.bootstrapTable('refresh');" style="display: none;">关闭弹出层</button>
+
+
+</body>
+</html>

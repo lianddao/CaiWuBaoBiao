@@ -1,0 +1,40 @@
+@charset "utf-8";
+/* CSS Document */
+body{ font-family: "微软雅黑"; width:100%; height:auto; overflow:hidden; background:url(../images/login/login_bg.png) no-repeat top left; background-size:100%;   }
+*{ margin:0; padding:0;}
+ul,li{ list-style:none;}
+i{ font-style:normal;}
+a,a:hover{ text-decoration:none; }
+input{outline:none;}
+
+.login_top{ background:url(../images/login/tip_bg.png) repeat-x; width:100%; height:63px;}
+.login_top_main{ width:1024px; margin:0 auto; position: relative;}
+.logo_pic{ float:left; background:url(../images/login/logo_1.png) no-repeat; width:116px; height:80px; position:absolute; top:0; left:0;}
+.logo_font{ float:left; background:url(../images/login/logo_font.png) no-repeat center; width:95px; height:60px; margin-left:126px;}
+.login_top_main i{ float:left; margin-left:10px; color:#2c2c2c; font-size:23px; line-height:60px; line-height:59px; }
+.login_mian{ width:1024px; height:340px; position:absolute; top:50%; left:50%; margin-left:-517px; margin-top:-170px; overflow:hidden; }
+.login_mian_left{ float:left;}
+.weclom{ background:url(../images/login/welcom.png) no-repeat; width:90px; height:21px; margin-top:20px;}
+.left_logo{ margin-top:50px; margin-left:40px; background:url(../images/login/logo_2.png) no-repeat; width:215px; height:48px;}
+.left_tit{ margin-top:28px; margin-left:40px; background:url(../images/login/pt.png) no-repeat; width:287px; height:55px;}
+.login_mian_right{ float:right; background:url(../images/login/kuang.png) no-repeat; width:595px; height:348px;}
+.login_box{ width:326px; margin:30px auto;}
+.yhdl{ font-size:24px; color:#000;}
+.login_put{ width:100%; margin-top:30px; }
+.login_put li{ width:99%; height:42px; line-height:42px; color:#4d535e; border:1px solid #c9c9c9;background-color:#FFF; margin-bottom:24px; cursor:pointer;  }
+.login_put li span{ float:left; margin-left:10px;}
+.login_put li span.xm{ background:url(../images/login/user.png) no-repeat left center; width:17px; height:42px;}
+.login_put li span.mm{ background:url(../images/login/pasword.png) no-repeat left center; width:16px; height:42px; }
+.login_put li input{ width:85%; margin-left:10px; text-align:left; background:none; border:none; font-size:16px; color:#4d535e; height:42px; line-height:42px;}
+.login_put li:hover{ border:1px solid #99c8fc;}
+.zddl{ height:20px;}
+.zddl span{ float:left; width:10px; height:10px; border:1px solid #eaa334; margin-top:4px;}
+.zddl i{ float:left; font-size:14px; margin-left:5px; height:20px; line-height:20px;}
+.denglu{ width:100%; margin-top:24px; }
+.denglu input{ width:100%;height:42px; line-height:42px; border-radius:2px; border:none; background-color:#0060a6; font-size:18px; color:#FFF; text-align:center; font-family: "微软雅黑";  }
+
+
+
+
+
+

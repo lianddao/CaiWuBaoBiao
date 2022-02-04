@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>[[${page_dto.day}]] 价格和汇率</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--3. x-editable (bootstrap 3) -->
+    <link href="/lib/bootstrap3-editable-1.5.1/css/bootstrap-editable.css" rel="stylesheet">
+    <script src="/lib/bootstrap3-editable-1.5.1/js/bootstrap-editable.js"></script>
+
+    <!--4. bootstrap-table 启用edit-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/editable/bootstrap-table-editable.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--7. 表格数据导出-->
+    <script src="/lib/tableExport-1.20.1/tableExport.min.js"></script>
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <!--8. 日期控件-->
+    <script src="/lib/My97DatePicker/WdatePicker.js"></script>
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+</head>
+<body>
+
+
+
+<div>
+    <ul class="breadcrumb ">
+        <li><i class="fa fa-home"></i></li>
+        <li>惠州石化</li>
+        <li>价格和汇率</li>
+    </ul>
+    <ul class="top-toolbar"></ul>
+</div>
+
+
+
+<div style="margin: 0 10px;">
+    <h3 id="h3Title" class="table-title">[[${page_dto.dayCnString}]]价格和汇率</h3>
+
+    <div id="toolbar" class="btn-group">
+        <input type="text" class="Wdate"
+               onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd', maxDate:'%y-%M-{%d}', onpicked: function(dp){changeSearch(dp)} })"
+               autocomplete="off" style="width:8em; height: 2em; text-indent: 0.5em;"
+               placeholder="日期" th:value="${page_dto.day}" />
+    </div>
+
+    <form action="/JiaGeLiShi/list" style="display: none">
+        <input id="txtDate" type="text" name="day">
+        <button id="btnSearchDate">按日期查询</button>
+    </form>
+
+    <table id="table" class="table table-hover table-condensed" style="table-layout: fixed;"
+           data-search="true" data-show-search-button="true" data-search-on-enter-key="true" data-query-params="queryParams"
+           data-toolbar="#toolbar"
+           data-show-columns="true"
+           data-show-export="true"
+           data-unique-id="id"
+           data-id-field="id"
+           data-editable-url="/JiaGeLiShi/edit">
+        <thead>
+        <tr>
+            <th data-field="name" data-width="15" data-width-unit="em" data-halign="center">名称</th>
+            <th data-field="裸税价" data-width="150" data-halign="center" data-align="right">裸税价</th>
+            <th data-field="含税价" data-width="150" data-halign="center" data-align="right">含税价</th>
+            <th data-field="汇率" data-width="150" data-halign="center" data-align="right">汇率</th>
+            <th data-field="对应的单元格公式">对应的单元格公式</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+
+
+<script th:inline="javascript">
+    var $table = $('#table')
+
+    var day = /*[[${page_dto.day}]]*/null
+
+
+    function queryParams(params) {
+        params.day = day
+        return params
+    }
+
+    $(function () {
+        $table.bootstrapTable({
+            url: "/JiaGeLiShi/data",
+            height: window.innerHeight - $('#h3Title').position().top - $('#h3Title').height(),
+            exportOptions: bootstrapTable默认导出设置(day, '价格和汇率'),
+        })
+    })
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>导入开氏数据</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/lib/ajaxfileupload.js"></script>
+    <style>
+
+        /* ALL LOADERS */
+
+        .loader {
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        /* LOADER 1 */
+
+        #loader-1:before, #loader-1:after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+            border: 10px solid transparent;
+            border-top-color: #3498db;
+        }
+
+        #loader-1:before {
+            z-index: 100;
+            animation: spin 1s infinite;
+        }
+
+        #loader-1:after {
+            border: 10px solid #ccc;
+        }
+
+        @keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script>
+        function ajaxFileUpload() {
+            let v = $("#file").val()
+            if (v.length == 0) {
+                alert("请选择一个文件")
+                return
+            }
+
+            $("#result_text").attr("hidden", false);
+            $("#result_text").val("等待返回结果......");
+
+            $("#loader-1").show()
+
+            var btnImport = window.parent.document.getElementById("btnImport")
+
+            $.ajaxFileUpload
+            (
+                {
+                    url: '/ImportExcel/importKS', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'file', //文件上传域的ID
+                    dataType: 'String', //返回值类型 一般设置为json
+                    success: function (data, status)  //服务器成功响应处理函数
+                    {
+                        $("#result_text").val(data);
+
+
+                        btnImport.disabled = false
+                        $(btnImport).text("导入")
+                        $("#file").removeAttr("disabled")
+                        $("#loader-1").hide()
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        $("#result_text").val(data);
+                    }
+                }
+            )
+            return false;
+        }
+    </script>
+</head>
+<body>
+<div class="alert alert-warning fa fa-warning" style="width: 100%;">
+    导入的数据将<b style="color: red">覆盖</b>最新的数据
+</div>
+<form class="form-horizontal" id="form_table" action="#" enctype="multipart/form-data" method="post" style="padding: 0 2em;">
+    <h4>
+        选择开氏的导数文件:
+        <span class="loader" id="loader-1" style="float: right; display: none"></span>
+    </h4>
+
+    <input type="file" name="file" id="file" accept=".xls,.xlsx" class="form-control" style="min-width: 50%; border:solid 1px #ddd; box-shadow: 1px 1px 1px #888; display: inline; margin-bottom: 2em;" />
+    <input type="button" value="导入" onclick="ajaxFileUpload()" id="btnImport" style="display: none">
+
+    <textarea id="result_text" hidden="true" style="width:100%" rows="6"></textarea>
+</form>
+
+</body>
+</html>

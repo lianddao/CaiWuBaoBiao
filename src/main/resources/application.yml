@@ -1,0 +1,131 @@
+#服务端口
+server:
+  port: 8903 #生产环境服务端口
+  #port: 7000 #本地环境服务端口
+  servlet:
+    context-path: /
+info:
+  app.name: hzsh-profit-forecast
+  app.info: 效益测算
+  version: "1.0"
+  author: "惠州石化"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "health", "info", "metrics" ]
+  endpoint:
+    health:
+      show-details: ALWAYS
+spring:
+  application:
+    name: hzsh-profit-forecast
+    info: 效益测算
+  boot:
+    admin:
+      client:
+        url: http://10.152.70.38:8091
+        instance:
+          name: hzsh-bigscreen
+          prefer-ip: true
+          service-base-url: http://10.152.70.22:8903
+  #关闭缓存，及时刷新
+  freemarker:
+    cache: false
+  devtools:
+    restart:
+      #添加那个目录的文件需要restart
+      #设置重启的目录，添加那个目录的文件需要restart
+      additional-paths: src/main/java,resources/**,static/**,templates/**
+      #排除那个目录的文件不需要restart
+      #exclude: static/**,public/**
+      #热部署失效
+      enabled: true
+      # 解决项目自动重新编译后接口报404的问题
+      poll-interval: 3000ms
+      quiet-period: 1000ms
+    livereload:
+      port: 35728
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    servlet:
+      content-type: text/html
+
+
+
+  datasource:
+    dynamic:
+      datasource:
+
+        # 默认效益测算的数据库
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          hikari:
+            minimum-idle: 5
+            maximum-pool-size: 15
+            auto-commit: true
+            idle-timeout: 30000
+            pool-name: UserHikariCP
+            max-lifetime: 1800000
+            connection-timeout: 30000
+            connection-test-query: select * from dual
+          driver-class-name: oracle.jdbc.OracleDriver
+          url: jdbc:oracle:thin:@10.152.71.177:1521/hzshdb
+          username: hzshyycg
+          password: yycgHZSH1234
+
+
+        # 价格表的数据库
+        jiaGe:
+          driver-class-name: oracle.jdbc.OracleDriver
+          url: jdbc:oracle:thin:@10.152.71.177:1521/hzshdb
+          username: prices
+          password: Prices1234
+
+
+
+  #静态资源
+  mvc:
+    #css，js等静态资源，默认/**映射到项目中的/static
+    static-path-pattern: /**
+    #    static-path-pattern: /static/**
+    date-format: yyyy-MM-dd #springmvc传入对象的参数
+    throw-exception-if-no-handler-found: true
+
+  resources:
+    #页面等静态资源，从左往右优先级依次降低
+    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss SSS #JSON输出日期
+    time-zone: GMT+8 #JSON日期化输出格式
+  #禁用掉jmx内部监控(linux war包运行)
+  jmx:
+    enabled: false
+  http:
+    encoding:
+      charset: utf-8 #默认字符集编码
+
+
+  servlet:
+    multipart:
+      max-file-size: 20Mb
+
+# Mybatis-Plus 配置
+mybatis-plus:
+  mapper-locations: classpath:com/hzsh/*/mapper/*Mapper.xml
+  type-aliases-package: com.hzsh.*.model.*
+
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+cas:
+  server-url-prefix: http://10.152.70.23:8080/cas
+  server-login-url: http://10.152.70.23:8080/cas/login
+  client-host-url: http://127.0.0.1:8903
+  validation-type: CAS

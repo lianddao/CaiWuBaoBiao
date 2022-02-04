@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>修改公式</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--8. 日期控件-->
+    <script src="/lib/My97DatePicker/WdatePicker.js"></script>
+
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+</head>
+<body>
+
+
+
+<input type="hidden" id="hidId" th:value="${gongShi.id}">
+
+<table class="table">
+    <tr>
+        <td>Code</td>
+        <td>[[${gongShi.code}]]</td>
+    </tr>
+    <tr>
+        <td style="width: 150px;">单元格</td>
+        <td>[[${gongShi.displayText}]]</td>
+    </tr>
+    <tr>
+        <td>单元格公式直观值</td>
+        <td>
+            <textarea id="txtGongShiText" rows="5" style="width: 100%; "></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td><b>单元格公式</b></td>
+        <td>
+            <textarea id="txtGongShi" rows="5" style="width: 100%; font-weight: bold; border: solid 2px; box-shadow: 3px -2px 3px #888;"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 15em;">
+            测试日期
+            <input id="txtTestDay" type="text" class="Wdate"
+                   onclick="WdatePicker({ skin:'whyGreen', dateFmt:'yyyy-MM-dd', maxDate:'%y-%M-{%d}', onpicked: function(dp){changeSearch(dp)} })"
+                   autocomplete="off" style="width:7em; height: 1.5em; margin-left: 0.5em; "
+                   placeholder="测试日期" title="测试日期" value="2020-09-01" disabled />
+        </td>
+        <td>
+            <button id="btnTest">测试</button>
+        </td>
+    </tr>
+</table>
+
+
+<button id="btnSave" style="display: none"></button>
+
+
+
+<script th:inline="javascript">
+    var gongShi = /*[[${gongShi}]]*/null
+
+    var $txtGongShi = $("#txtGongShi")
+    var $txtGongShiText = $("#txtGongShiText")
+    var $btnTest = $("#btnTest")
+
+    $(function () {
+        $txtGongShi.val(gongShi.单元格公式)
+        $txtGongShiText.val(gongShi.单元格公式直观值)
+
+        $btnTest.click(function () {
+            var gong_shi_id = gongShi.id
+            var gong_shi = $txtGongShi.val()
+            var testDay = $("#txtTestDay").val()
+            $.ajax({
+                url: "/GongShi/jiSuan",
+                data: {gong_shi_id: gong_shi_id, gong_shi: gong_shi, testDay: testDay},
+                success: function (result) {
+                    alert(result)
+                },
+                error: function (result) {
+                    alert('公式的格式可能有错误')
+                }
+            })
+        })
+
+
+        $("#btnSave").click(function () {
+            var id = document.getElementById('hidId').value
+            var value = document.getElementById('txtGongShi').value
+            var text = document.getElementById('txtGongShiText').value
+
+            $.ajax({
+                type: "post",
+                url: "/GongShi/edit2",
+                data: {id: id, gong_shi: value, gong_shi_text: text},
+                success: function (result) {
+                    window.parent.document.getElementById('btnCloseModal').click()
+                }
+            })
+        })
+    })
+
+</script>
+
+
+</body>
+</html>

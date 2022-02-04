@@ -1,0 +1,429 @@
+{
+  "表": [
+    {
+      "biaoMing": "利润表",
+      "tableName": "HZSH_LI_RUN_123",
+      "columns": [
+        {
+          "lieMing": "测算",
+          "colName": "测算"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "销售收入",
+      "tableName": "HZSH_XIAOSHOU_SHOURU_123",
+      "columns": [
+        {
+          "lieMing": "本期销售数量",
+          "colName": "本期销售数量"
+        },
+        {
+          "lieMing": "本期销售单价",
+          "colName": "本期销售单价"
+        },
+        {
+          "lieMing": "本期销售金额",
+          "colName": "本期销售金额"
+        },
+        {
+          "lieMing": "单价含税",
+          "colName": "单价含税"
+        },
+        {
+          "lieMing": "税率",
+          "colName": "税率"
+        },
+        {
+          "lieMing": "消费税标准",
+          "colName": "消费税标准"
+        },
+        {
+          "lieMing": "消费税",
+          "colName": "消费税"
+        },
+        {
+          "lieMing": "裸税单价",
+          "colName": "裸税单价"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "销售成本",
+      "tableName": "HZSH_XIAOSHOU_CHENGBEN_123",
+      "columns": [
+        {
+          "lieMing": "本期生产数量",
+          "colName": "本期生产数量"
+        },
+        {
+          "lieMing": "本期生产系数",
+          "colName": "本期生产系数"
+        },
+        {
+          "lieMing": "本期生产积数",
+          "colName": "本期生产积数"
+        },
+        {
+          "lieMing": "本期生产单价",
+          "colName": "本期生产单价"
+        },
+        {
+          "lieMing": "本期生产金额",
+          "colName": "本期生产金额"
+        },
+        {
+          "lieMing": "本期销售数量",
+          "colName": "本期销售数量",
+          "hidden": true
+        },
+        {
+          "lieMing": "本期销售单价",
+          "colName": "本期销售单价",
+          "hidden": true
+        },
+        {
+          "lieMing": "本期销售金额",
+          "colName": "本期销售金额",
+          "hidden": true
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "经营费用表",
+      "tableName": "HZSH_JINGYING_FEIYONG_123",
+      "columns": [
+        {
+          "lieMing": "数量",
+          "colName": "数量"
+        },
+        {
+          "lieMing": "单价",
+          "colName": "单价"
+        },
+        {
+          "lieMing": "金额",
+          "colName": "金额"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "税金及附加",
+      "tableName": "HZSH_SHUIJIN_123",
+      "columns": [
+        {
+          "lieMing": "税率",
+          "colName": "税率"
+        },
+        {
+          "lieMing": "基数",
+          "colName": "基数"
+        },
+        {
+          "lieMing": "应交税金",
+          "colName": "应交税金"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "原材料表",
+      "tableName": "HZSH_YUAN_CAI_LIAO_123",
+      "columns": [
+        {
+          "lieMing": "本期采购数量吨",
+          "colName": "本期采购数量吨"
+        },
+        {
+          "lieMing": "本期采购数量桶",
+          "colName": "本期采购数量桶"
+        },
+        {
+          "lieMing": "本期采购价格小计",
+          "colName": "本期采购价格小计"
+        },
+        {
+          "lieMing": "本期采购价格美元",
+          "colName": "本期采购价格美元"
+        },
+        {
+          "lieMing": "本期采购价格元",
+          "colName": "本期采购价格元"
+        },
+        {
+          "lieMing": "本期采购单位运杂费",
+          "colName": "本期采购单位运杂费"
+        },
+        {
+          "lieMing": "本期采购到厂运杂费",
+          "colName": "本期采购到厂运杂费"
+        },
+        {
+          "lieMing": "本期采购到厂总成本",
+          "colName": "本期采购到厂总成本"
+        },
+        {
+          "lieMing": "本期加工数量",
+          "colName": "本期加工数量",
+          "hidden": true
+        },
+        {
+          "lieMing": "本期加工单位成本",
+          "colName": "本期加工单位成本",
+          "hidden": true
+        },
+        {
+          "lieMing": "本期加工总成本",
+          "colName": "本期加工总成本",
+          "hidden": true
+        },
+        {
+          "lieMing": "吨桶比",
+          "colName": "吨桶比"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "半成品",
+      "tableName": "HZSH_BAN_CHENG_PIN_123",
+      "columns": [
+        {
+          "lieMing": "期初库存数量",
+          "colName": "期初库存数量"
+        },
+        {
+          "lieMing": "期初库存单价",
+          "colName": "期初库存单价"
+        },
+        {
+          "lieMing": "期初库存金额",
+          "colName": "期初库存金额"
+        },
+        {
+          "lieMing": "期末库存数量",
+          "colName": "期末库存数量",
+          "hidden": true
+        },
+        {
+          "lieMing": "期末库存单价",
+          "colName": "期末库存单价",
+          "hidden": true
+        },
+        {
+          "lieMing": "期末库存金额",
+          "colName": "期末库存金额",
+          "hidden": true
+        },
+        {
+          "lieMing": "库存减少数量",
+          "colName": "库存减少数量",
+          "hidden": true
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "费用明细",
+      "tableName": "HZSH_FEI_YONG_123",
+      "columns": [
+        {
+          "lieMing": "合计",
+          "colName": "合计"
+        },
+        {
+          "lieMing": "生产费用",
+          "colName": "生产费用"
+        },
+        {
+          "lieMing": "管理费用",
+          "colName": "管理费用"
+        },
+        {
+          "lieMing": "销售费用",
+          "colName": "销售费用"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏利润表",
+      "tableName": "ZHKS_LI_RUN_123",
+      "columns": [
+        {
+          "lieMing": "预测金额",
+          "colName": "预测金额"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏销售收入",
+      "tableName": "ZHKS_XIAOSHOU_SHOURU_123",
+      "columns": [
+        {
+          "lieMing": "消费税率",
+          "colName": "消费税率"
+        },
+        {
+          "lieMing": "本月销量",
+          "colName": "本月销量"
+        },
+        {
+          "lieMing": "含税价",
+          "colName": "含税价"
+        },
+        {
+          "lieMing": "不含税价",
+          "colName": "不含税价"
+        },
+        {
+          "lieMing": "收入",
+          "colName": "收入"
+        },
+        {
+          "lieMing": "裸税价",
+          "colName": "裸税价"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏产品成本",
+      "tableName": "ZHKS_CHANPIN_CHENGBEN_123",
+      "columns": [
+        {
+          "lieMing": "生产数量",
+          "colName": "生产数量"
+        },
+        {
+          "lieMing": "生产单价",
+          "colName": "生产单价"
+        },
+        {
+          "lieMing": "生产金额",
+          "colName": "生产金额"
+        },
+        {
+          "lieMing": "生产系数",
+          "colName": "生产系数"
+        },
+        {
+          "lieMing": "生产积数",
+          "colName": "生产积数"
+        },
+        {
+          "lieMing": "销售数量",
+          "colName": "销售数量"
+        },
+        {
+          "lieMing": "销售单价",
+          "colName": "销售单价"
+        },
+        {
+          "lieMing": "销售金额",
+          "colName": "销售金额"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏生产经营",
+      "tableName": "ZHKS_SHENGCHAN_JINGYIN_123",
+      "columns": [
+        {
+          "lieMing": "数量",
+          "colName": "数量"
+        },
+        {
+          "lieMing": "单价",
+          "colName": "单价"
+        },
+        {
+          "lieMing": "金额万元",
+          "colName": "金额万元"
+        },
+        {
+          "lieMing": "吨油成本",
+          "colName": "吨油成本"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏费用",
+      "tableName": "ZHKS_FEI_YONG_123",
+      "columns": [
+        {
+          "lieMing": "合计",
+          "colName": "合计"
+        },
+        {
+          "lieMing": "制造费用",
+          "colName": "制造费用"
+        },
+        {
+          "lieMing": "管理费用",
+          "colName": "管理费用"
+        },
+        {
+          "lieMing": "财务费用",
+          "colName": "财务费用"
+        },
+        {
+          "lieMing": "销售费用",
+          "colName": "销售费用"
+        }
+      ]
+    },
+
+
+    {
+      "biaoMing": "开氏半成品",
+      "tableName": "ZHKS_BAN_CHENG_PIN_123",
+      "columns": [
+        {
+          "lieMing": "月初数量",
+          "colName": "月初数量"
+        },
+        {
+          "lieMing": "月初单价",
+          "colName": "月初单价"
+        },
+        {
+          "lieMing": "月初金额",
+          "colName": "月初金额"
+        },
+        {
+          "lieMing": "月末数量",
+          "colName": "月末数量"
+        },
+        {
+          "lieMing": "月末单价",
+          "colName": "月末单价"
+        },
+        {
+          "lieMing": "月末金额",
+          "colName": "月末金额"
+        }
+      ]
+    }
+
+  ]
+}

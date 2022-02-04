@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>新增公式</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+
+
+    <style>
+        td * {
+            font-size: 12px;
+        }
+
+        .biao-jia-cu {
+            font-weight: bold;
+            color: red;
+        }
+
+        .hang-jia-cu {
+            font-weight: bold;
+            color: green;
+        }
+
+        .lie-jia-cu {
+            font-weight: bold;
+            color: blue;
+        }
+
+        button[disabled] {
+            color: #aaa;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<!--上部分-->
+<div style="position: absolute; top: 0; height: 20em; left: 1em; right: 1em; padding: 0 1em; border: solid 1px; border-radius: 1em;">
+    <div>
+        <h6>结果目标列</h6>
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <input id="txtResultCN" style="width: 100%; " />
+                </td>
+                <td>
+                    <input id="txtResult" style="width: 100%; " placeholder="目标单元格的公式" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <h6>公式的直观值:</h6>
+        <textarea id="txtGongShiCN" style="width: 100%; height: 4em; " placeholder="公式的直观值"></textarea>
+        <h6>公式:</h6>
+        <textarea id="txtGongShi" style="width: 100%; height: 4em; " placeholder="使用一个或多个空格隔开每个元素"></textarea>
+        <label id="lblMsg" style="margin-right: 1em;"></label>
+        <button id="btnInsertOrUpdate">保存公式</button>
+        <button id="btnTest" type="button">测试(基于底稿)</button>
+        <input id="btnClear" type="button" value="双击清空输入">
+
+
+
+        <div style="display: none; border:dashed 1px; padding: 0 1em; border-radius: 3px;">
+            <button id="btn复制底稿数据" type="button">将「底稿数据」复制到当前日期用作测试</button>
+            <button id="btn删除复制的底稿数据" type="button">删除复制的底稿数据</button>
+        </div>
+
+
+        <span style="display:none">
+            <button id="btn填充关联的对象编码" title="保存或修改公式的时候,若为缩写公式,则同时保存公式中包含的所有对象编码" disabled>填充关联的对象编码</button>
+
+            <button id="btn测试定时任务" disabled>测试定时任务</button>
+
+            <button id="btnSUM">SUM</button>
+
+            <button id="btnIF" disabled>IF</button>
+
+            <button id="btnSUMIF" disabled>SUMIF</button>
+
+            <button id="btnSUMPRODUCT" disabled>SUMPRODUCT</button>
+        </span>
+
+
+    </div>
+
+    <script>
+        $(function () {
+            $("#btn删除复制的底稿数据").click(function () {
+                $.ajax({
+                    url: "/DingShi/removeCopy",
+                    success: function (data) {
+                        alert('done')
+                    }
+                })
+            })
+
+            $("#btn复制底稿数据").click(function () {
+                var btn = $("#btn复制底稿数据")
+                btn.attr("disabled", true)
+                $.ajax({
+                    url: "/DingShi/copyDiGao",
+                    success: function (data) {
+                        alert('done')
+                    },
+                    complete: function () {
+                        btn.removeAttr("disabled")
+                    }
+                })
+            })
+
+            $("#btn测试定时任务").click(function () {
+                $.ajax({
+                    url: "/DingShi/test",
+                    success: function (data) {
+                        alert('done')
+                    }
+                })
+            })
+            $("#btn填充关联的对象编码").click(function () {
+                $.ajax({
+                    url: "/GongShi/填充关联的对象编码",
+                    success: function (data) {
+                        alert('done')
+                    }
+                })
+            })
+
+            $("#btnSUM").click(function () {
+                $.ajax({
+                    url: "/GongShi/SUM",
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            })
+
+            $("#btnIF").click(function () {
+                $.ajax({
+                    url: "/GongShi/IF",
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            })
+
+            $("#btnSUMIF").click(function () {
+                $.ajax({
+                    url: "/GongShi/SUMIF",
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            })
+
+            $("#btnSUMPRODUCT").click(function () {
+                $.ajax({
+                    url: "/GongShi/SUMPRODUCT",
+                    success: function (data) {
+                        alert(data)
+                    }
+                })
+            })
+        })
+    </script>
+</div>
+
+
+
+<!--下部分-->
+<div style="position: absolute; top: 21em; bottom: 0; left: 1em; right: 1em; padding: 0 1em;">
+
+    <div style="position:fixed; top:21em; bottom:1em; left:1em; width:10em; border:solid 1px red; overflow: auto;">
+        <table id="table-biao" class="table table-hover table-condensed" style="table-layout: fixed;">
+            <thead>
+            <tr>
+                <th data-width="2" data-width-unit="em" data-formatter="numFormatter">#</th>
+                <th data-field="biaoMing">表</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div style="position:fixed; top:21em; bottom:1em; left:12em; width: 33em; border:solid 1px green; overflow:auto;">
+        <table id="table-hang" class="table table-hover table-condensed" style="table-layout: fixed;">
+            <thead>
+            <tr>
+                <th data-width="2" data-width-unit="em" data-formatter="numFormatter">#</th>
+                <th data-field="hangMing" data-cell-style="设置列缩进">行</th>
+                <th data-field="rowName" data-width="80">CODE</th>
+                <th data-checkbox="true"></th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div style="position:fixed; top:21em; bottom:1em; left:46em; width: 13em;  border:solid 1px blue; overflow:auto;">
+        <table id="table-lie" class="table table-hover table-condensed" style="table-layout: fixed;">
+            <thead>
+            <tr>
+                <th data-width="2" data-width-unit="em" data-formatter="numFormatter">#</th>
+                <th data-field="lieMing">列</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div style="position:fixed; top:21em; bottom:1em; left:60em; right: 2em;  border:solid 1px yellow; overflow:auto;">
+        <button id="btnCreateResult" class="btn btn-danger">↑ 设置第一行为结果目标单元格</button>
+
+        <button id="btnCreateFuZhi">↑ 直接赋值</button>
+        <button id="btnCreateSUM">↑ SUM</button>
+        <button id="btnCreateDefault">↑ 无运算符</button>
+
+
+
+        <table id="table-select" class="table table-hover table-condensed" style="table-layout: fixed;">
+            <thead>
+            <tr>
+                <th data-width="2" data-width-unit="em" data-align="center" data-formatter="removeFormatter">#</th>
+                <th data-field="公式">列</th>
+                <th data-field="code">Code</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+</div>
+
+
+
+<script th:inline="javascript">
+    var $tableBiao = $('#table-biao')
+    var $tableHang = $('#table-hang')
+    var $tableLie = $('#table-lie')
+    var $tableSelect = $('#table-select')
+
+    var $txtResult = $('#txtResult')
+    var $txtResultCN = $('#txtResultCN')
+
+    var $txtGongShiCN = $('#txtGongShiCN')
+    var $txtGongShi = $('#txtGongShi')
+
+    var select_data = []
+
+
+    var 表 = '', 行 = '', 列 = ''
+    var biao = '', hang = '', lie = ''
+
+
+
+
+    $(function () {
+
+        // 表
+        $tableBiao.bootstrapTable({
+            url: "/GongShi/biao",
+            onClickRow: function (row, $element, field) {
+                $(".biao-jia-cu").removeClass("biao-jia-cu")
+                $element.addClass("biao-jia-cu")
+
+                加载行数据(row.biaoMing)
+                加载列数据(row.biaoMing)
+
+                表 = row.biaoMing
+                biao = row.biaoMing
+            }
+        })
+
+
+        // 行
+        $tableHang.bootstrapTable({
+            url: "/GongShi/hang",
+            rowStyle: 设置行样式,
+            onClickRow: function (row, $element, field) {
+                $(".hang-jia-cu").removeClass("hang-jia-cu")
+                $element.addClass("hang-jia-cu")
+
+                行 = row.hangMing
+                hang = row.rowName // 编码
+            }
+        })
+
+
+        // 列
+        $tableLie.bootstrapTable({
+            url: "/GongShi/lie",
+            onClickRow: function (row, $element, field) {
+                $(".lie-jia-cu").removeClass("lie-jia-cu")
+                $element.addClass("lie-jia-cu")
+
+                列 = row.lieMing
+                lie = row.lieMing
+
+
+
+
+                var hangs = $tableHang.bootstrapTable('getSelections')
+                var 分隔符 = '#'
+
+                if (hangs.length == 0) {
+                    if (表.length > 0 && 行.length > 0 && 列.length > 0) {
+                        var one = {"公式": 表 + 分隔符 + 行 + 分隔符 + 列, "gongShiDTO": biao + 分隔符 + hang + 分隔符 + lie, "code": hang}
+                        放入候选队列(one)
+                    }
+                } else {
+                    // 批量设置
+                    var aaa = [], bbb = []
+                    $.each(hangs, function (i, n) {
+                        var hangMing = n.hangMing
+                        var code = n.rowName
+                        var one = {"公式": 表 + 分隔符 + hangMing + 分隔符 + 列, "gongShiDTO": biao + 分隔符 + code + 分隔符 + lie, "code": hang}
+                        放入候选队列(one)
+                    })
+                }
+                $tableSelect.bootstrapTable('load', select_data)
+
+            }
+        })
+
+
+        // 公式体表格
+        $tableSelect.bootstrapTable({
+            data: select_data,
+            onClickRow: function (row, $element, field) {
+                if (field === 0) {
+                    var position = -1
+                    var find = $.grep(select_data, function (n, i) {
+                        if (n.公式 == row.公式) {
+                            position = i
+                        }
+                        return n.公式 == row.公式
+                    })[0]
+
+                    if (find != null) {
+                        select_data.splice(position, 1)
+                        $tableSelect.bootstrapTable('load', select_data)
+                    }
+                }
+            }
+        })
+
+
+
+        // 结果目标列
+        $("#btnCreateResult").click(function () {
+            var 公式 = select_data[0].公式
+            var gongShiDTO = select_data[0].gongShiDTO
+
+            $txtResultCN.val(公式)
+            $txtResult.val(gongShiDTO)
+        })
+
+
+
+
+
+        // 生成直接赋值公式
+        $("#btnCreateFuZhi").click(function () {
+            var gongShiCN = gongShiCN = select_data[0].公式
+            var gongShi = select_data[0].gongShiDTO
+            $txtGongShiCN.val(gongShiCN)
+            $txtGongShi.val(gongShi)
+        })
+
+
+        // 生成SUM公式
+        $("#btnCreateSUM").click(function () {
+            var gongShiCN = ''
+            var gongShi = ''
+
+            if (select_data.length == 2) {
+                gongShiCN = "SUM ( " + select_data[0].公式 + " : " + select_data[1].公式 + " )"
+                gongShi = "SUM ( " + select_data[0].gongShiDTO + " : " + select_data[1].gongShiDTO + " )"
+            } else {
+                $.each(select_data, function (i, n) {
+                    if (select_data.length - 1 === i) {
+                        gongShiCN += n.公式
+                        gongShi += n.gongShiDTO
+                    } else {
+                        gongShiCN += n.公式 + "  "
+                        gongShi += n.gongShiDTO + "  "
+                    }
+                })
+                gongShiCN = "SUM (" + gongShiCN + " )"
+                gongShi = "SUM ( " + gongShi + " )"
+            }
+
+            $txtGongShiCN.val(gongShiCN)
+            $txtGongShi.val(gongShi)
+        })
+
+
+        // 无运算符
+        $("#btnCreateDefault").click(function () {
+            var gongShiCN = ''
+            var gongShi = ''
+
+            $.each(select_data, function (i, n) {
+                gongShiCN += $.trim(n.公式) + "  "
+                gongShi += n.gongShiDTO + "  "
+            })
+
+            $txtGongShiCN.val(gongShiCN)
+            $txtGongShi.val(gongShi)
+        })
+
+
+
+        // 测试公式的运行结果
+        $("#btnTest").click(function () {
+            var gong_shi = $txtGongShi.val()
+
+            $.ajax({
+                url: "/GongShi/jiSuan",
+                data: {gong_shi: gong_shi},
+                success: function (data) {
+                    alert(data)
+                }
+            })
+        })
+
+
+        $("#btnClear").dblclick(function () {
+            $txtResultCN.val('')
+            $txtResult.val('')
+            $txtGongShiCN.val('')
+            $txtGongShi.val('')
+        })
+
+
+        // ★★★保存新增的公式
+        $("#btnInsertOrUpdate").click(function () {
+            var 单元格 = $.trim($txtResult.val())
+            var 单元格直观值 = $.trim($txtResultCN.val())
+            var 公式 = $.trim($txtGongShi.val())
+            var 公式直观值 = $.trim($txtGongShiCN.val())
+            $("#lblMsg").text("-")
+
+            if (单元格.length == 0) {
+                console.log("无效的提交")
+            }
+
+            $.ajax({
+                method: 'post',
+                url: "/GongShi/insertOrUpdate",
+                data: {target: 单元格, target_cn: 单元格直观值, gong_shi: 公式, gong_shi_cn: 公式直观值},
+                success: function (data) {
+                    $("#lblMsg").text(data + " " + new Date().toLocaleTimeString())
+                }
+            })
+        })
+    })
+
+
+    function numFormatter(value, row, index) {
+        return index + 1;
+    }
+
+    function removeFormatter(value, row, index) {
+        return '<i class="fa fa-trash-o"></i>'
+    }
+
+    function 加载行数据(biaoMing) {
+        $.ajax({
+            url: "/GongShi/hang",
+            data: {biaoMing: biaoMing},
+            success: function (data) {
+                data = data.length === 0 ? [] : data
+                $tableHang.bootstrapTable('load', data)
+            }
+        })
+    }
+
+    function 加载列数据(biaoMing) {
+        $.ajax({
+            url: "/GongShi/lie",
+            data: {biaoMing: biaoMing},
+            success: function (data) {
+                data = data.length === 0 ? [] : data
+                $tableLie.bootstrapTable('load', data)
+            }
+        })
+    }
+
+
+    function 放入候选队列(one) {
+        var find = $.grep(select_data, function (n, i) {
+            return n.公式 === one.公式
+        })[0]
+        if (find == null) {
+            select_data.push(one)
+            $tableSelect.bootstrapTable('load', select_data)
+        }
+    }
+
+</script>
+
+
+
+</body>
+</html>

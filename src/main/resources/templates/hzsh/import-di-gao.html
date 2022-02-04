@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导入Excel底稿</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+    <script src="/lib/ajaxfileupload.js"></script>
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-color: white;">
+
+
+<div style="text-align: center;">
+    <form class="form-horizontal" id="form_table" action="#" enctype="multipart/form-data" method="post">
+        <div>
+            <b>选择本次导入的底稿文件类别</b>
+            <select id="selFileType">
+                <option value="">-</option>
+                <option value="惠州石化">惠州石化</option>
+                <option value="开氏">开氏</option>
+            </select>
+
+            <div style="color: #aaa; margin:1em;">
+                <div><i class="fa fa-info-circle"></i> 惠州石化 : 2020年惠州石化测算底稿（9月份不考虑库存）0907.xls</div>
+                <div><i class="fa fa-info-circle"></i> 开氏 : 2021年中海开氏测算底稿（8月份测算）全产全销.xlsx</div>
+            </div>
+
+        </div>
+
+        <input type="file" name="file" id="file" accept=".xls,.xlsx" style="border:solid 1px #ddd; box-shadow: 1px 1px 1px #888; display: inline; margin-bottom: 2em;" />
+        <br>
+        <input type="button" value="导入" onclick="ajaxFileUpload()">
+        <input type="reset" value="重置" style="margin-left: 1em;">
+    </form>
+    <div>
+        <textarea id="result_text" hidden="true" style="width:100%; height:10em; margin-top:1em;"></textarea>
+    </div>
+</div>
+
+
+
+<script>
+    function ajaxFileUpload() {
+        if ($("#selFileType").val().length == 0) {
+            alert('请选择底稿数据来源')
+            return
+        }
+
+        let v = $("#file").val()
+        if (v.length == 0) {
+            alert("请选择一个文件")
+            return
+        }
+
+        $("#result_text").attr("hidden", false);
+        $("#result_text").val("等待返回结果......");
+
+        $.ajaxFileUpload
+        (
+            {
+                url: '/ImportExcel/importDiGao', //用于文件上传的服务器端请求地址
+                data: {fileType: $("#selFileType").val()},
+                secureuri: false, //是否需要安全协议，一般设置为false
+                fileElementId: 'file', //文件上传域的ID
+                dataType: 'String', //返回值类型 一般设置为json
+                success: function (data, status)  //服务器成功响应处理函数
+                {
+                    $("#result_text").val(data);
+                },
+                error: function (data, status, e)//服务器响应失败处理函数
+                {
+                    $("#result_text").val(data);
+                }
+            }
+        )
+        return false;
+    }
+</script>
+</body>
+</html>

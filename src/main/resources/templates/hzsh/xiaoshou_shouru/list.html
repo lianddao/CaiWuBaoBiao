@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>[[${page_dto.day}]] 销售收入</title>
+    <script src="/lib/jquery-3.6.0.min.js"></script>
+
+    <!--1. bootstrap 3 -->
+    <link href="/lib/bootstrap-3.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-3.4.1/dist/js/bootstrap.min.js"></script>
+
+    <!--2. bootstrap-table-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/bootstrap-table.min.js"></script>
+
+    <!--3. x-editable (bootstrap 3) -->
+    <link href="/lib/bootstrap3-editable-1.5.1/css/bootstrap-editable.css" rel="stylesheet">
+    <script src="/lib/bootstrap3-editable-1.5.1/js/bootstrap-editable.js"></script>
+
+    <!--4. bootstrap-table 启用edit-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/editable/bootstrap-table-editable.js"></script>
+
+    <!--5. bootstrap-table 启用中文-->
+    <script src="/lib/bootstrap-table-1.18.3/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--6. 图标-->
+    <link href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--7. 表格数据导出-->
+    <script src="/lib/tableExport-1.20.1/tableExport.min.js"></script>
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+    <!--8. 日期控件-->
+    <script src="/lib/My97DatePicker/WdatePicker.js"></script>
+
+    <!--固定列-->
+    <link href="/lib/bootstrap-table-1.18.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet">
+    <script src="/lib/bootstrap-table-1.18.3/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js"></script>
+
+    <link href="/lib/default.css" rel="stylesheet">
+    <script src="/lib/default.js"></script>
+</head>
+<body>
+
+
+
+<div>
+    <ul class="breadcrumb ">
+        <li><i class="fa fa-home"></i></li>
+        <li>惠州石化</li>
+        <li>销售收入</li>
+    </ul>
+    <ul class="top-toolbar"></ul>
+</div>
+
+
+
+<div style="margin: 0 10px;">
+    <h3 id="h3Title" class="table-title">[[${page_dto.dayCnString}]]测算销售收入预算表</h3>
+
+    <div id="toolbar" class="btn-group">
+        <a class="btn btn-default fa fa-download" href="/ImportExcel/downloadTemplate"> 下载模板</a>
+        <button class="btn btn-default fa fa-sign-in" title="导入数量等数据" onclick="javascript:$('#importModal').modal('show')"> 导入数据</button>
+        <input type="text" class="Wdate"
+               onclick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd', maxDate:'%y-%M-{%d}', onpicked: function(dp){changeSearch(dp)} })"
+               autocomplete="off" style="width:8em; height: 2em; text-indent: 0.5em;"
+               placeholder="月份" th:value="${page_dto.day}" />
+    </div>
+
+    <form action="/XiaoShouShouRu/list" style="display: none">
+        <input id="txtDate" type="text" name="day">
+        <button id="btnSearchDate">按日期查询</button>
+    </form>
+
+    <table id="table" class="table table-hover table-condensed" style="table-layout: fixed"
+           data-search="true" data-show-search-button="true" data-search-on-enter-key="true" data-query-params="queryParams"
+           data-toolbar="#toolbar"
+           data-show-columns="true"
+           data-show-export="true"
+           data-fixed-columns="true"
+           data-fixed-number="1"
+           data-unique-id="id"
+           data-id-field="id"
+           data-editable-url="/XiaoShouShouRu/edit">
+        <thead>
+        <tr>
+            <th rowspan="2" data-field="name" data-width="220" data-halign="center" data-valign="middle" data-cell-style="设置列缩进">税金项目</th>
+            <th colspan="3" data-width="25" data-width-unit="em" data-halign="center">本期销售</th>
+            <th rowspan="2" data-field="单价含税" data-width="8" data-width-unit="em" data-halign="center" data-valign="middle" data-align="right" data-editable="true" data-editable-title="单价含税" data-formatter="to_int">单价<br>(含税)</th>
+            <th rowspan="2" data-field="税率" data-width="8" data-width-unit="em" data-halign="center" data-valign="middle" data-align="right" data-editable="true" data-editable-title="税率" data-formatter="百分比Formatter">税率</th>
+            <th rowspan="2" data-field="消费税标准" data-width="8" data-width-unit="em" data-halign="center" data-valign="middle" data-align="right" data-editable="true" data-editable-title="消费税标准" data-formatter="to_int">消费税标准</th>
+            <th rowspan="2" data-field="消费税" data-width="8" data-width-unit="em" data-halign="center" data-valign="middle" data-align="right" data-editable="true" data-editable-title="消费税" data-formatter="to_int">消费税</th>
+            <th rowspan="2" data-field="裸税单价" data-width="8" data-width-unit="em" data-halign="center" data-valign="middle" data-align="right" data-editable="true" data-editable-title="裸税单价" data-formatter="to_int">裸税单价</th>
+            <th rowspan="2" data-field="sapCode" data-width="5" data-width-unit="em" data-halign="center" data-valign="middle" data-align="center" data-visible="false">SAP物料号</th>
+        </tr>
+
+        <tr>
+
+            <!--本期销售-->
+            <th data-field="本期销售数量" data-halign="center" data-valign="middle" data-align="right" data-formatter="to_int">本期销售数量</th>
+            <th data-field="本期销售单价" data-halign="center" data-valign="middle" data-align="right" data-formatter="to_2">本期销售单价</th>
+            <th data-field="本期销售金额" data-halign="center" data-valign="middle" data-align="right" data-formatter="to_int">本期销售金额</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
+
+
+<script th:inline="javascript">
+    var $table = $('#table')
+
+    var day = /*[[${page_dto.day}]]*/null
+
+    var today = new Date()
+    var 年 = today.getFullYear(), 月 = today.getMonth() + 1, 日 = today.getDate()
+    var 年月日 = 年 + "-" + (月 < 10 ? "0" + 月 : 月) + "-" + 日
+    if (day == 年月日) {
+        var alert = $("<br><small style='font-size: 8px; color: red;'>测试用提示: 「现实日期」等于「页面数据的日期」, 这些数据将采用「底稿的汇率和价格」</small><br>")
+        $("#h3Title").append(alert)
+    }
+
+
+    function queryParams(params) {
+        params.day = day
+        return params
+    }
+
+    $(function () {
+        $table.bootstrapTable({
+            url: "/XiaoShouShouRu/data",
+            height: window.innerHeight - $('#h3Title').position().top - $('#h3Title').height(),
+            exportOptions: bootstrapTable默认导出设置(day, '销售收入'),
+            rowStyle: 设置行样式,
+            onEditableInit: 设置只读效果,
+            onEditableSave: function () {
+                $table.bootstrapTable('refresh')
+            },
+            onEditableShown: function (field, row, $el, editable) {
+                editable.input.$input[0].value = row[field]
+            }
+        })
+    })
+
+
+    function 百分比Formatter(value, row) {
+        if (value == null) {
+            return null
+        }
+
+        if (value < 1) {
+            return parseFloat(value * 100).toFixed(0) + "%"
+        }
+
+        return to_int(value, row)
+    }
+</script>
+
+
+
+<!-- 导入数据弹出层 -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" data-backdrop="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入数量等数据</h4>
+            </div>
+            <div class="modal-body">
+                <iframe id="importFrame" src="/hzsh/import-shu-liang.html" style="width: 100%; height: 310px"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btnImport">导入</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#btnImport").click(function () {
+            document.getElementById("importFrame").contentWindow.document.getElementById("btnImport").click()
+            $(this).attr("disabled", true).text("已通知执行。可关闭页面或继续等待")
+        })
+    })
+</script>
+
+
+</body>
+</html>

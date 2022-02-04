@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzsh.Quartz.mapper.QuartzDeployMapper">
+  <resultMap id="BaseResultMap" type="com.hzsh.Quartz.entity.QuartzDeploy">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="CREATETIME" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UPDATETIME" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="BIGENTIME" jdbcType="TIMESTAMP" property="bigentime" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CRON" jdbcType="VARCHAR" property="cron" />
+    <result column="PROJECTCODE" jdbcType="VARCHAR" property="projectcode" />
+    <result column="PROJECTNAME" jdbcType="VARCHAR" property="projectname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, NAME, CREATETIME, UPDATETIME, BIGENTIME, STATUS, REMARK, CRON,PROJECTCODE,PROJECTNAME
+  </sql>
+  <!-- 根据条件查询-->
+  <select id="selectByQuartzDeploy" parameterType="com.hzsh.Quartz.entity.QuartzDeploy"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>
+    from QUARTZ_DEPLOY 
+    where 1=1 
+      <if test="id != null">
+        AND ID = #{id} 
+      </if>
+      <if test="name != null">
+        AND NAME = #{name} 
+      </if>
+      <if test="createtime != null">
+        AND CREATETIME = #{createtime} 
+      </if>
+      <if test="updatetime != null">
+        AND UPDATETIME = #{updatetime} 
+      </if>
+      <if test="bigentime != null">
+        AND BIGENTIME = #{bigentime} 
+      </if>
+      <if test="status != null">
+        AND STATUS = #{status} 
+      </if>
+      <if test="remark != null">
+        AND REMARK = #{remark} 
+      </if>
+      <if test="cron != null">
+        AND CRON = #{cron} 
+      </if>
+       <if test="cron != null">
+        AND CRON = #{cron} 
+      </if>
+  </select>
+  
+  
+  <select id="selectstatustrue"  resultMap="BaseResultMap">
+ 	 select * from QUARTZ_DEPLOY	where STATUS='0'
+  </select>
+  <select id="getTotalByBySearchMap" parameterType="Map" resultType="java.lang.Integer">
+	 	select count(*) from QUARTZ_DEPLOY	where 1=1
+	 	  <if test="name != null and name!=''">
+		 			AND name = #{name}
+		  </if>
+		   <if test="cron != null and cron!=''">
+		 			AND  cron = #{cron}
+		  </if>
+  </select>
+ 	<!--分页使用SQL -->
+	<select id="selectBySearchMap" parameterType="Map" resultType="com.hzsh.Quartz.entity.QuartzDeploy">
+	 select c.*
+  		from (select G.*, rownum rn
+
+          from (select g.* from QUARTZ_DEPLOY g
+           where 1=1
+	 	  <if test="name != null and name!=''">
+		 			AND g.name = #{name}
+		  </if>
+		  <if test="cron != null and cron!=''">
+		 			AND  g.cron = #{cron}
+		  </if>
+            order by #{order}) G ) c	
+	 	where c.rn <![CDATA[  >= ]]> #{pageNumber} and c.rn <![CDATA[  <= ]]> #{pageSize}
+	</select>
+   <select id="selectByname" parameterType="java.lang.String" resultMap="BaseResultMap">
+       select * from QUARTZ_DEPLOY
+	       <where>
+	          <if test="searchname != null">
+	 		     and name LIKE  '%'||#{searchname}||'%' 
+	 	     </if>     
+	     
+	     </where>  
+    </select>
+  
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from QUARTZ_DEPLOY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from QUARTZ_DEPLOY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
+    insert into QUARTZ_DEPLOY (ID, NAME, CREATETIME, 
+      UPDATETIME, BIGENTIME, STATUS, 
+      REMARK, CRON,PROJECTCODE,PROJECTNAME)
+    values (sys_guid(), #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{bigentime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR},#{projectcode,jdbcType=VARCHAR},#{projectname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
+    insert into QUARTZ_DEPLOY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="createtime != null">
+        CREATETIME,
+      </if>
+      <if test="updatetime != null">
+        UPDATETIME,
+      </if>
+      <if test="bigentime != null">
+        BIGENTIME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="cron != null">
+        CRON,
+      </if>
+      <if test="projectcode != null">
+        PROJECTCODE,
+      </if>
+      <if test="projectname != null">
+        PROJECTNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        sys_guid(),
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bigentime != null">
+        #{bigentime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cron != null">
+        #{cron,jdbcType=VARCHAR},
+      </if>
+      <if test="projectcode != null">
+        #{projectcode,jdbcType=VARCHAR},
+      </if>
+      <if test="projectname != null">
+        #{projectname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
+    update QUARTZ_DEPLOY
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bigentime != null">
+        BIGENTIME = #{bigentime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="cron != null">
+        CRON = #{cron,jdbcType=VARCHAR},
+      </if>
+      <if test="projectname != null">
+        PROJECTNAME = #{projectname,jdbcType=VARCHAR},
+      </if>
+       <if test="projectcode != null">
+        PROJECTCODE = #{projectcode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
+    update QUARTZ_DEPLOY
+    set NAME = #{name,jdbcType=VARCHAR},
+      CREATETIME = #{createtime,jdbcType=TIMESTAMP},
+      UPDATETIME = #{updatetime,jdbcType=TIMESTAMP},
+      BIGENTIME = #{bigentime,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CRON = #{cron,jdbcType=VARCHAR},
+      PROJECTNAME = #{projectname,jdbcType=VARCHAR},
+      PROJECTCODE = #{projectcode,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

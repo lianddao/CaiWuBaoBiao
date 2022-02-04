@@ -1,29 +1,12 @@
 package com.hzsh.Quartz.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
+import com.hzsh.Quartz.entity.QuartzDeploy;
+import org.quartz.*;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.hzsh.Quartz.entity.QuartzDeploy;
-import com.hzsh.common.utils.MyException;
+import java.util.*;
 
 
 /**
@@ -111,7 +94,7 @@ public class QuartzSchedulers {
         JobKey jobKey = new JobKey(quartzDeploy.getName(), quartzDeploy.getName());
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail == null)
-            throw new MyException("任务不存在！");
+            throw new RuntimeException("任务不存在！");
         scheduler.pauseJob(jobKey);
         message = "定时任务：" + quartzDeploy.getName() + "已暂停";
         return message;
@@ -154,7 +137,7 @@ public class QuartzSchedulers {
         // JobDetail 是具体Job实例
         if (this.getJobDetail(quartzDeploy) != null) {// 如果任务计划scheduler里已存在此任务
             //stopJob(quartzDeploy);
-            throw new MyException(quartzDeploy.getName() + "此任务已存在");
+            throw new RuntimeException(quartzDeploy.getName() + "此任务已存在");
         }
 
 

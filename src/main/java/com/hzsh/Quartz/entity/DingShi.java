@@ -46,12 +46,6 @@ public class DingShi {
     /**
      * 所属项目
      */
-    @TableField(value = "PROJECTCODE")
-    public String projectCode;
-
-    /**
-     * 所属项目
-     */
     @TableField(value = "PROJECTNAME")
     public String projectName;
 

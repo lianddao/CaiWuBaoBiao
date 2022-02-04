@@ -10,11 +10,10 @@
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="CRON" jdbcType="VARCHAR" property="cron" />
-    <result column="PROJECTCODE" jdbcType="VARCHAR" property="projectcode" />
     <result column="PROJECTNAME" jdbcType="VARCHAR" property="projectname" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, NAME, CREATETIME, UPDATETIME, BIGENTIME, STATUS, REMARK, CRON,PROJECTCODE,PROJECTNAME
+    ID, NAME, CREATETIME, UPDATETIME, BIGENTIME, STATUS, REMARK, CRON,PROJECTNAME
   </sql>
   <!-- 根据条件查询-->
   <select id="selectByQuartzDeploy" parameterType="com.hzsh.Quartz.entity.QuartzDeploy"  resultMap="BaseResultMap">
@@ -103,10 +102,10 @@
   <insert id="insert" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
     insert into QUARTZ_DEPLOY (ID, NAME, CREATETIME, 
       UPDATETIME, BIGENTIME, STATUS, 
-      REMARK, CRON,PROJECTCODE,PROJECTNAME)
+      REMARK, CRON,PROJECTNAME)
     values (sys_guid(), #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
       #{updatetime,jdbcType=TIMESTAMP}, #{bigentime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR},#{projectcode,jdbcType=VARCHAR},#{projectname,jdbcType=VARCHAR})
+      #{remark,jdbcType=VARCHAR}, #{cron,jdbcType=VARCHAR},#{projectname,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hzsh.Quartz.entity.QuartzDeploy">
     insert into QUARTZ_DEPLOY
@@ -134,9 +133,6 @@
       </if>
       <if test="cron != null">
         CRON,
-      </if>
-      <if test="projectcode != null">
-        PROJECTCODE,
       </if>
       <if test="projectname != null">
         PROJECTNAME,
@@ -202,9 +198,6 @@
       <if test="projectname != null">
         PROJECTNAME = #{projectname,jdbcType=VARCHAR},
       </if>
-       <if test="projectcode != null">
-        PROJECTCODE = #{projectcode,jdbcType=VARCHAR},
-      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -218,7 +211,6 @@
       REMARK = #{remark,jdbcType=VARCHAR},
       CRON = #{cron,jdbcType=VARCHAR},
       PROJECTNAME = #{projectname,jdbcType=VARCHAR},
-      PROJECTCODE = #{projectcode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

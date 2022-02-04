@@ -1,22 +1,19 @@
 package com.hzsh.Quartz.controller;
 
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.hzsh.Quartz.entity.QuartzDeploy;
+import com.hzsh.Quartz.service.QuartzDeployService;
+import com.hzsh.Quartz.service.QuartzSchedulers;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.hzsh.Quartz.entity.QuartzDeploy;
-import com.hzsh.Quartz.service.QuartzDeployService;
-import com.hzsh.Quartz.service.QuartzSchedulers;
-import com.hzsh.common.utils.RequestParamsTrim;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -311,7 +308,7 @@ public class QuartzDeployController {
      * @throws Exception
      */
     @GetMapping("/list")
-    public String listAll(Model model, @RequestParamsTrim Map<String, Object> searchList) throws Exception {
+    public String listAll(Model model, Map<String, Object> searchList) throws Exception {
 
         String dec = " id ASC";
         int size = 20;

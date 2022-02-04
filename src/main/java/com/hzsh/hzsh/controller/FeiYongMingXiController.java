@@ -59,7 +59,7 @@ public class FeiYongMingXiController extends SupperController<FeiYongMingXiServi
         if (name.equals("remark")) {
             FeiYongMingXi one = service.getById(pk);
             one.remark = value;
-            updateById(one);
+            service.updateById(one);
         }
         else {
             service.edit(name, value, pk);

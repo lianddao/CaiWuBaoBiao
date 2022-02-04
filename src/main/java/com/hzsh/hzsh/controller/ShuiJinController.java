@@ -71,7 +71,7 @@ public class ShuiJinController extends SupperController<ShuiJinService, ShuiJin>
         if (name.equals("remark")) {
             ShuiJin one = service.getById(pk);
             one.remark = value;
-            updateById(one);
+            service.updateById(one);
         }
         else {
             service.edit(name, value, pk);

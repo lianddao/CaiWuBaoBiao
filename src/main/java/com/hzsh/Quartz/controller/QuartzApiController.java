@@ -9,9 +9,7 @@ import com.hzsh.Quartz.service.QuartzSchedulers;
 
 
 
-/**
- * 这里并没有采用restful风格 只是简单封装了一下api
- */
+
 @RestController
 @RequestMapping("/quartz")
 public class QuartzApiController {

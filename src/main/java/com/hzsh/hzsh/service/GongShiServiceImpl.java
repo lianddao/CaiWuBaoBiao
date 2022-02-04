@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hzsh.common.utils.MyException;
 import com.hzsh.hzsh.controller.GongShiCache;
 import com.hzsh.hzsh.dto.CodeAndValue;
 import com.hzsh.hzsh.dto.GongShiDTO;
@@ -33,7 +32,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.*;
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -1021,7 +1019,7 @@ public class GongShiServiceImpl extends ServiceImpl<GongShiMapper, GongShi> impl
         //        String pattern = "yyyy-MM-dd";
         //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         if (! fileName.matches("^.+\\.(?i)(xls)$") && ! fileName.matches("^.+\\.(?i)(xlsx)$")) {
-            throw new MyException("上传文件格式不正确");
+            throw new RuntimeException("上传文件格式不正确");
         }
         boolean isExcel2003 = true;
         if (fileName.matches("^.+\\.(?i)(xlsx)$")) {

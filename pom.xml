@@ -39,30 +39,7 @@
             <artifactId>spring-boot-admin-starter-client</artifactId>
             <version>2.0.4</version>
         </dependency>
-        <!-- spring oauth2
-              <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-cloud-starter-security</artifactId>
-               <version>2.0.1.RELEASE</version>
-             </dependency>
 
-             <dependency>
-                 <groupId>org.springframework.cloud</groupId>
-                 <artifactId>spring-cloud-starter-oauth2</artifactId>
-                 <version>2.0.1.RELEASE</version>
-             </dependency>
-           -->
-
-        <!-- 热部署 -->
-        <!--
-            注释此引用可解决
-            MybatisPlusException: Your property named "xxx" cannot find the corresponding database column name!
-        -->
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional>
-        </dependency>-->
 
 
         <!--测试依赖-->
@@ -362,26 +339,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.hzsh.CaiWuBaoBiaoApplication</mainClass>
-                </configuration>
-            </plugin>
-
-            <!-- 由源码生成jar，再由jar生成docker镜像-->
-            <!--docker-maven-plugin插件(带Dockerfile文件)-->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.4.13</version>
-                <configuration>
-                    <imageName>regnode.hzsh:5000/dhcc/${project.name}:${project.version}</imageName>
-                    <!--Dockerfile文件位置-->
-                    <dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
                 </configuration>
             </plugin>
 

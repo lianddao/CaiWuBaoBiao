@@ -101,7 +101,7 @@ public class ImportExcelController {
     @ResponseBody
     public String 导入Excel底稿数据(MultipartFile file, String fileType) {
         switch (fileType) {
-            case "惠州石化":
+            case "某公司":
                 // 1. 利润表
                 liRunService.importLiRun(file);
 
